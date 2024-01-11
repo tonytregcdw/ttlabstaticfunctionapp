@@ -18,7 +18,7 @@
     (async function() {
         const ttout = await fetch('https://ttazfunctionpsavd01.azurewebsites.net/api/function_goldmastervms?code=znlm0jBnVaSRSTUaCvSrJeGLWwXbQ-r_EY353TZpxMtKAzFuxU7Sgw==');
         const ttjson = await ttout.json();
-        document.querySelector('#name').textContent = ttjson;
+        document.querySelector('#name').textContent = JSON.stringify(ttjson);
     }());
     </script>
 
