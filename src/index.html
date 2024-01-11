@@ -16,10 +16,13 @@
 
     <script>
     (async function() {
-        const { text } = await( await fetch(`/api/message`)).json();
-        document.querySelector('#name').textContent = text;
+        const ttout = await fetch('https://ttazfunctionpsavd01.azurewebsites.net/api/function_goldmastervms?code=znlm0jBnVaSRSTUaCvSrJeGLWwXbQ-r_EY353TZpxMtKAzFuxU7Sgw==');
+        const ttjson = await ttout.json();
+        document.querySelector('#name').textContent = ttjson;
     }());
     </script>
+
+
   </main>
 </body>
 
