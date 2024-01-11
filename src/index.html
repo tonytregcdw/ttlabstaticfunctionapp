@@ -16,7 +16,7 @@
 
     <script>
     (async function() {
-        const { text } = await( await fetch(`/api/function_goldmastervms?code=znlm0jBnVaSRSTUaCvSrJeGLWwXbQ-r_EY353TZpxMtKAzFuxU7Sgw==`)).json();
+        const { text } = await( await fetch(`/api/function_goldmastervms`)).json();
         document.querySelector('#name').textContent = text;
     }());
     </script>
