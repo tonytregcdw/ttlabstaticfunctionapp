@@ -5,21 +5,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles.css">
-  <title>Vanilla JavaScript App</title>
+  <title>json test</title>
 </head>
 
 <body>
+  <div id="myData"></div>
   <main>
     <h1>TT updated2 Vanilla JavaScript App</h1>
     <p>Loading content from the function API: <b id="name">...</b></p>
     </main>
 
     <script>
-    (async function() {
-        const ttout = await fetch('/api/function_goldmastervms?code=znlm0jBnVaSRSTUaCvSrJeGLWwXbQ-r_EY353TZpxMtKAzFuxU7Sgw==');
-        const ttjson = await ttout.json();
-        document.querySelector('#name').textContent = JSON.stringify(ttjson);
-    }());
+        fetch('/api/function_goldmastervms?code=znlm0jBnVaSRSTUaCvSrJeGLWwXbQ-r_EY353TZpxMtKAzFuxU7Sgw==')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                appendData(data);
+            })
+            .catch(function (err) {
+                console.log('error: ' + err);
+            });
+        function appendData(data) {
+            var mainContainer = document.getElementById("myData");
+            for (var i = 0; i < data.length; i++) {
+                var div = document.createElement("div");
+                div.innerHTML = 'Name: ' + data[i].VMs + ' ' + data[i].Galleries;
+                mainContainer.appendChild(div);
+            }
+        }
     </script>
 
 
