@@ -23,6 +23,7 @@
         function appendData(data) {
             var mainContainer = document.getElementById("myData");
             for (var i = 0; i < data.length; i++) {
+                console.log(data[i])
                 var div = document.createElement("div");
                 // div.innerHTML = 'Name: ' + data[i].firstName + ' ' + data[i].lastName;
                 div.innerHTML = 'Name: ' + data[i].People;
@@ -30,6 +31,7 @@
             }
             var jsonContainer = document.getElementById("jsonData");
             var jsondiv = document.createElement("div");
+            console.log(data)
             jsondiv.innerHTML = JSON.stringify(data);
             jsonContainer.appendChild(jsondiv);
         }
