@@ -28,10 +28,14 @@
             });
         function appendData(data) {
             var mainContainer = document.getElementById("myData");
-            for (var i = 0; i < data.length; i++) {
-                var div = document.createElement("div");
-                div.innerHTML = 'Name: ' + data[i].VMs + ' ' + data[i].Galleries;
-                mainContainer.appendChild(div);
+            for(var i = 0; i < data.VMs.length; i++)
+            {
+              var tt = data.VMs[i];
+              console.log(tt.Name)
+              var div = document.createElement("div");
+              // div.innerHTML = 'Name: ' + data[i].firstName + ' ' + data[i].lastName;
+              div.innerHTML = 'Name: ' + data.VMs[i].Name;
+              mainContainer.appendChild(div);
             }
         }
     </script>
