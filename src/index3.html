@@ -22,6 +22,8 @@
             });
         function appendData(data) {
             var mainContainer = document.getElementById("myData");
+            console.log("running appendata")
+            Object.keys(data).forEach(item => console.log(item))
             for (var i = 0; i < data.length; i++) {
                 console.log(data[i])
                 var div = document.createElement("div");
