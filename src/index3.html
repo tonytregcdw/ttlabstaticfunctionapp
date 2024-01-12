@@ -29,7 +29,7 @@
             }
             var jsonContainer = document.getElementById("jsonData");
             var jsondiv = document.createElement("div");
-            jsondiv.innerHTML = data;
+            jsondiv.innerHTML = JSON.stringify(data);
             jsonContainer.appendChild(jsondiv);
         }
     </script>
