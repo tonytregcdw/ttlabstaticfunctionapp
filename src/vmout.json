@@ -1,0 +1,34 @@
+{
+    "VMs": [
+        {
+        "Name": "TTREDHAT01",
+        "ResourceGroup": "TTWEBAPPS"
+        },
+        {
+        "Name": "tt-bigip-vm-01",
+        "ResourceGroup": "TT-F5-LAB"
+        },
+        {
+        "Name": "ttansible",
+        "ResourceGroup": "TT_INFRASTRUCTURE_RG"
+        },
+        {
+        "Name": "ubansible01",
+        "ResourceGroup": "TT_INFRASTRUCTURE_RG"
+        },
+        {
+        "Name": "WS2019ADDS01",
+        "ResourceGroup": "TT_INFRASTRUCTURE_RG"
+        }
+    ],
+    "Galleries": [
+        {
+        "Name": "ttavdgallery01",
+        "ResourceGroup": "TT-RG-INFRA-WEU",
+        "Definitions": [
+            "avdgolddef1",
+            "avdgoldv2"
+        ]
+        }
+    ]
+}
