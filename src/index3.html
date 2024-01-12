@@ -8,6 +8,7 @@
 </head>
 <body>
     <div id="myData"></div>
+    <div id="jsonData"></div>
     <script>
         fetch('people.json')
             .then(function (response) {
@@ -26,6 +27,10 @@
                 div.innerHTML = 'Name: ' + data[i].firstName + ' ' + data[i].lastName;
                 mainContainer.appendChild(div);
             }
+            var jsonContainer = document.getElementById("jsonData");
+            var jsondiv = document.createElement("div");
+            jsondiv.innerHTML = data;
+            jsonContainer.appendChild(jsondiv);
         }
     </script>
 </body>
