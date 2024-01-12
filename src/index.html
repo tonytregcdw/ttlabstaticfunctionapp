@@ -9,7 +9,9 @@
 </head>
 
 <body>
-  <div id="VMs"><p>Gold VMs</p></div>
+  <div id="VMs"><p>Gold VMs</p>
+    <select id="VMselector"></select>
+  </div>
   <div id="Galleries"><p>Galleries</p></div>
   <main>
     <h1>TT json render</h1>
@@ -28,6 +30,7 @@
                 console.log('error: ' + err);
             });
         function appendData(data) {
+            VMselect = document.getElementById("VMselector");
             var VMContainer = document.getElementById("VMs");
             var GalleryContainer = document.getElementById("Galleries");
             for(var i = 0; i < data.VMs.length; i++)
@@ -35,6 +38,10 @@
               var div = document.createElement("div");
               div.innerHTML = data.VMs[i].Name;
               VMContainer.appendChild(div);
+              var option = document.createElement("option");
+              option.value = data.VMs[i].Name;
+              option.textContent = data.VMs[i].Name;
+              VMselect.appendChild(option);
             }
             for(var i = 0; i < data.Galleries.length; i++)
             {
