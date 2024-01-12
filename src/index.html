@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="styles.css">
   <title>json test</title>
 </head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <body>
   <div id="VMs"><p>Gold VMs</p>
@@ -14,6 +15,9 @@
   </div>
   <div id="Galleries"><p>Galleries</p>
     <select id="Galleryselector"></select>
+  </div>
+  <div id="Definitions"><p>Definitions</p>
+    <select id="Definitionsselector"></select>
   </div>
   <main>
     <h1>TT json render</h1>
@@ -51,6 +55,16 @@
               Galleryselect.appendChild(option);
             }
         }
+        Galleryselector.addEventListener('change', function(){
+          for(var i = 0; i < ddata.Galleries[this.value].Definitions.length; i++)
+          {
+            var option = document.createElement("option");
+            option.value = ddata.Galleries[this.value].Definitions;
+            option.textContent = data.Galleries[this.value].Definitions[i];
+            Definitionsselect.appendChild(option);
+          }
+
+        });
     </script>
 
   </main>
