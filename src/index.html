@@ -12,11 +12,13 @@
   <div id="VMs"><p>Gold VMs</p>
     <select id="VMselector"></select>
   </div>
-  <div id="Galleries"><p>Galleries</p></div>
+  <div id="Galleries"><p>Galleries</p>
+    <select id="Galleryselector"></select>
+  </div>
   <main>
     <h1>TT json render</h1>
     <p>Loading content from the function API: <b id="name">...</b></p>
-    </main>
+  </main>
 
     <script>
         fetch('/api/function_goldmastervms?code=znlm0jBnVaSRSTUaCvSrJeGLWwXbQ-r_EY353TZpxMtKAzFuxU7Sgw==')
@@ -31,13 +33,11 @@
             });
         function appendData(data) {
             VMselect = document.getElementById("VMselector");
+            Galleryselect = document.getElementById("Galleryselector");
             var VMContainer = document.getElementById("VMs");
             var GalleryContainer = document.getElementById("Galleries");
             for(var i = 0; i < data.VMs.length; i++)
             {
-              var div = document.createElement("div");
-              div.innerHTML = data.VMs[i].Name;
-              VMContainer.appendChild(div);
               var option = document.createElement("option");
               option.value = data.VMs[i].Name;
               option.textContent = data.VMs[i].Name;
@@ -45,9 +45,10 @@
             }
             for(var i = 0; i < data.Galleries.length; i++)
             {
-              var div = document.createElement("div");
-              div.innerHTML = data.Galleries[i].Name;
-              GalleryContainer.appendChild(div);
+              var option = document.createElement("option");
+              option.value = data.Galleries[i].Name;
+              option.textContent = data.Galleries[i].Name;
+              Galleryselect.appendChild(option);
             }
         }
     </script>
