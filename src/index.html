@@ -9,7 +9,8 @@
 </head>
 
 <body>
-  <div id="myData"></div>
+  <div id="VMs"><p>Gold VMs</p></div>
+  <div id="Galleries"><p>Galleries</p></div>
   <main>
     <h1>TT json render</h1>
     <p>Loading content from the function API: <b id="name">...</b></p>
@@ -27,25 +28,21 @@
                 console.log('error: ' + err);
             });
         function appendData(data) {
-            var mainContainer = document.getElementById("myData");
+            var VMContainer = document.getElementById("VMs");
+            var GalleryContainer = document.getElementById("Galleries");
             for(var i = 0; i < data.VMs.length; i++)
             {
-              var tt = data.VMs[i];
-              console.log(tt.Name)
               var div = document.createElement("div");
-              // div.innerHTML = 'Name: ' + data[i].firstName + ' ' + data[i].lastName;
-              div.innerHTML = 'Name: ' + data.VMs[i].Name;
-              mainContainer.appendChild(div);
+              div.innerHTML = data.VMs[i].Name;
+              VMContainer.appendChild(div);
+            }
+            for(var i = 0; i < data.Galleries.length; i++)
+            {
+              var div = document.createElement("div");
+              div.innerHTML = data.Galleries[i].Name;
+              GalleryContainer.appendChild(div);
             }
         }
-    </script>
-
-    <script>
-      (async function() {
-          const ttout = await fetch('/api/function_goldmastervms?code=znlm0jBnVaSRSTUaCvSrJeGLWwXbQ-r_EY353TZpxMtKAzFuxU7Sgw==');
-          const ttjson = await ttout.json();
-          document.querySelector('#name').textContent = JSON.stringify(ttjson);
-      }());
     </script>
 
   </main>
