@@ -41,8 +41,8 @@
         }
         async function caller() {
           const json = await this.getJSON();
-          console.log(json);
-          //appendData(json);
+          console.log(JSON.stringify(json));
+          appendData(json);
           console.log('jsondataobjectis: ' + json);
           Galleryselect.addEventListener('change', function(){
             for(var i = 0; i < json.Galleries[this.value].Definitions.length; i++)
