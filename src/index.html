@@ -46,6 +46,7 @@
           console.log(JSON.stringify(json)); //check the object has come down
           appendData(json);
           Galleryselect.addEventListener('change', function(){
+            Definitionselect.innerText = null;
             let gallery = this.value
             console.log(gallery);
             console.log('listof defs:' + json.Galleries[gallery].Definitions)
