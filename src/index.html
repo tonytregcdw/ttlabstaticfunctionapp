@@ -28,6 +28,7 @@
         var VMselect = document.getElementById("VMselector");
         var Galleryselect = document.getElementById("Galleryselector");
         var Definitionselect = document.getElementById("Definitionsselector");
+        var json();
         async function getJSON() {
           return fetch('/api/function_goldmastervms?code=znlm0jBnVaSRSTUaCvSrJeGLWwXbQ-r_EY353TZpxMtKAzFuxU7Sgw==')
             .then(function (response) {
@@ -41,7 +42,7 @@
             });
         }
         async function caller() {
-          var json = await this.getJSON();
+          json = await this.getJSON();
           console.log(JSON.stringify(json)); //check the object has come down
           appendData(json);
           Galleryselect.addEventListener('change', function(){
@@ -50,6 +51,7 @@
             console.log('listof defs:' + json.Galleries[gallery].Definitions)
             for(var i = 0; i < json.Galleries[gallery].Definitions.length; i++)
             {
+              console.log(json.Galleries[gallery].Definitions[i]);
               let option = document.createElement("option");
               option.value = i;
               option.textContent = json.Galleries[gallery].Definitions[i];
