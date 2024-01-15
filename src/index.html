@@ -43,27 +43,26 @@
             //var GalleryContainer = document.getElementById("Galleries");
             for(var i = 0; i < data.VMs.length; i++)
             {
-              var option = document.createElement("option");
+              let option = document.createElement("option");
               option.value = data.VMs[i].Name;
               option.textContent = data.VMs[i].Name;
               VMselect.appendChild(option);
             }
             for(var i = 0; i < data.Galleries.length; i++)
             {
-              var option = document.createElement("option");
+              let option = document.createElement("option");
               option.value = data.Galleries[i].Name;
               option.textContent = data.Galleries[i].Name;
               Galleryselect.appendChild(option);
             }
         }
-        console.log('dataobjectis: ' + data)
         console.log('jsondataobjectis: ' + jsondata)
         Galleryselect.addEventListener('change', function(){
           for(var i = 0; i < data.Galleries[this.value].Definitions.length; i++)
           {
-            var option = document.createElement("option");
-            option.value = data.Galleries[this.value].Definitions;
-            option.textContent = data.Galleries[this.value].Definitions[i];
+            let option = document.createElement("option");
+            option.value = jsondata.Galleries[this.value].Definitions;
+            option.textContent = jsondata.Galleries[this.value].Definitions[i];
             Definitionsselect.appendChild(option);
           }
 
