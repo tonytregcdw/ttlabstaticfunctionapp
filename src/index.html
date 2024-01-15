@@ -28,7 +28,7 @@
         var VMselect = document.getElementById("VMselector");
         var Galleryselect = document.getElementById("Galleryselector");
         async function getJSON() {
-          fetch('/api/function_goldmastervms?code=znlm0jBnVaSRSTUaCvSrJeGLWwXbQ-r_EY353TZpxMtKAzFuxU7Sgw==')
+          return fetch('/api/function_goldmastervms?code=znlm0jBnVaSRSTUaCvSrJeGLWwXbQ-r_EY353TZpxMtKAzFuxU7Sgw==')
             .then(function (response) {
                 return response.json();
             })
@@ -42,7 +42,7 @@
         async function caller() {
           const json = await this.getJSON();
           console.log(json);
-          appendData(json);
+          //appendData(json);
           console.log('jsondataobjectis: ' + json);
           Galleryselect.addEventListener('change', function(){
             for(var i = 0; i < json.Galleries[this.value].Definitions.length; i++)
