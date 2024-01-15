@@ -46,6 +46,7 @@
           appendData(json);
           Galleryselect.addEventListener('change', function(){
             console.log(this.value);
+            console.log('listof defs:' + json.Galleries[this.value].Definitions)
             // for(var i = 0; i < json.Galleries[this.value].Definitions.length; i++)
             // {
             //   let option = document.createElement("option");
@@ -74,12 +75,12 @@
               Galleryselect.appendChild(option);
               console.log('defs:' + data.Galleries[i].Definitions);
               var Definitions = data.Galleries[i].Definitions;
-              for(var num in Definitions)
+              for(var y = 0; y < Definitions.length; y++)
               {
-                console.log('def:' + Definitions[num]);
+                console.log('def:' + Definitions[y]);
                 let option = document.createElement("option");
-                option.value = Definitions[num];
-                option.textContent = Definitions[num];
+                option.value = Definitions[y];
+                option.textContent = Definitions[y];
                 Definitionselect.appendChild(option);
               }
             }
