@@ -27,6 +27,7 @@
     <script>
         var VMselect = document.getElementById("VMselector");
         var Galleryselect = document.getElementById("Galleryselector");
+        var Definitionselect = document.getElementById("Definitionsselector");
         async function getJSON() {
           return fetch('/api/function_goldmastervms?code=znlm0jBnVaSRSTUaCvSrJeGLWwXbQ-r_EY353TZpxMtKAzFuxU7Sgw==')
             .then(function (response) {
@@ -43,15 +44,15 @@
           const json = await this.getJSON();
           console.log(JSON.stringify(json)); //check the object has come down
           appendData(json);
-          console.log('jsondataobjectis: ' + json);
           Galleryselect.addEventListener('change', function(){
-            for(var i = 0; i < json.Galleries[this.value].Definitions.length; i++)
-            {
-              let option = document.createElement("option");
-              option.value = json.Galleries[this.value].Definitions;
-              option.textContent = json.Galleries[this.value].Definitions[i];
-              Definitionsselect.appendChild(option);
-            }
+            console.log(this.value);
+            // for(var i = 0; i < json.Galleries[this.value].Definitions.length; i++)
+            // {
+            //   let option = document.createElement("option");
+            //   option.value = json.Galleries[this.value].Definitions;
+            //   option.textContent = json.Galleries[this.value].Definitions[i];
+            //   Definitionsselect.appendChild(option);
+            // }
           });
         }
 
@@ -71,6 +72,13 @@
               option.value = data.Galleries[i].Name;
               option.textContent = data.Galleries[i].Name;
               Galleryselect.appendChild(option);
+              for(var y = 0; y < data.Galleries[i].Definitions; y++)
+              {
+                let option = document.createElement("option");
+                option.value = data.Galleries[i].Definitions[y];
+                option.textContent = data.Galleries[i].Definitions[y];
+                Definitionselect.appendChild(option);
+              }
             }
         }
         caller();
