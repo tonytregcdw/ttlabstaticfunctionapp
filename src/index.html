@@ -45,8 +45,9 @@
           console.log(JSON.stringify(json)); //check the object has come down
           appendData(json);
           Galleryselect.addEventListener('change', function(){
-            console.log(this.value);
-            console.log('listof defs:' + json.Galleries)
+            let gallery = this.value
+            console.log(gallery);
+            console.log('listof defs:' + json.Galleries[gallery])
             // for(var i = 0; i < json.Galleries[this.value].Definitions.length; i++)
             // {
             //   let option = document.createElement("option");
