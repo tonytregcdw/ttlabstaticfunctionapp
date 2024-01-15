@@ -25,6 +25,8 @@
   </main>
 
     <script>
+        var VMselect = document.getElementById("VMselector");
+        var Galleryselect = document.getElementById("Galleryselector");
         fetch('/api/function_goldmastervms?code=znlm0jBnVaSRSTUaCvSrJeGLWwXbQ-r_EY353TZpxMtKAzFuxU7Sgw==')
             .then(function (response) {
                 return response.json();
@@ -37,8 +39,6 @@
                 console.log('error: ' + err);
             });
         function appendData(data) {
-            VMselect = document.getElementById("VMselector");
-            Galleryselect = document.getElementById("Galleryselector");
             //var VMContainer = document.getElementById("VMs");
             //var GalleryContainer = document.getElementById("Galleries");
             for(var i = 0; i < data.VMs.length; i++)
