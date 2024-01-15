@@ -74,6 +74,7 @@
               Galleryselect.appendChild(option);
               for(var y = 0; y < data.Galleries[i].Definitions; y++)
               {
+                console.log('def:' + data.Galleries[i].Definitions[y])
                 let option = document.createElement("option");
                 option.value = data.Galleries[i].Definitions[y];
                 option.textContent = data.Galleries[i].Definitions[y];
