@@ -45,20 +45,25 @@
           json = await this.getJSON();
           console.log(JSON.stringify(json)); //check the object has come down
           appendData(json);
+          updateDefinitions(Galleryselect.value);
           Galleryselect.addEventListener('change', function(){
             Definitionselect.innerText = null;
             let gallery = this.value
             console.log(gallery);
             console.log('listof defs:' + json.Galleries[gallery].Definitions)
-            for(var i = 0; i < json.Galleries[gallery].Definitions.length; i++)
+            updateDefinitions(gallery);
+          });
+        }
+
+        function updateDefinitions(data) {
+          for(var i = 0; i < json.Galleries[data].Definitions.length; i++)
             {
-              console.log(json.Galleries[gallery].Definitions[i].Name);
+              console.log(json.Galleries[data].Definitions[i].Name);
               let option = document.createElement("option");
               option.value = i;
-              option.textContent = json.Galleries[gallery].Definitions[i].Name;
+              option.textContent = json.Galleries[data].Definitions[i].Name;
               Definitionselect.appendChild(option);
             }
-          });
         }
 
         function appendData(data) {
@@ -79,15 +84,6 @@
               Galleryselect.appendChild(option);
               console.log('defs:' + data.Galleries[i].Definitions);
               var Definitions = data.Galleries[i].Definitions;
-              Definitionselect.innerText = null;
-              for(var y = 0; y < Definitions.length; y++)
-              {
-                console.log('def:' + Definitions[y]);
-                let option = document.createElement("option");
-                option.value = Definitions[y].Name;
-                option.textContent = Definitions[y].Name;
-                Definitionselect.appendChild(option);
-              }
             }
         }
         caller();
