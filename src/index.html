@@ -31,6 +31,7 @@
             })
             .then(function (data) {
                 appendData(data);
+                var jsondata = data
             })
             .catch(function (err) {
                 console.log('error: ' + err);
@@ -38,8 +39,8 @@
         function appendData(data) {
             VMselect = document.getElementById("VMselector");
             Galleryselect = document.getElementById("Galleryselector");
-            var VMContainer = document.getElementById("VMs");
-            var GalleryContainer = document.getElementById("Galleries");
+            //var VMContainer = document.getElementById("VMs");
+            //var GalleryContainer = document.getElementById("Galleries");
             for(var i = 0; i < data.VMs.length; i++)
             {
               var option = document.createElement("option");
@@ -55,11 +56,13 @@
               Galleryselect.appendChild(option);
             }
         }
-        Galleryselector.addEventListener('change', function(){
-          for(var i = 0; i < ddata.Galleries[this.value].Definitions.length; i++)
+        console.log('dataobjectis: ' + data)
+        console.log('jsondataobjectis: ' + jsondata)
+        Galleryselect.addEventListener('change', function(){
+          for(var i = 0; i < data.Galleries[this.value].Definitions.length; i++)
           {
             var option = document.createElement("option");
-            option.value = ddata.Galleries[this.value].Definitions;
+            option.value = data.Galleries[this.value].Definitions;
             option.textContent = data.Galleries[this.value].Definitions[i];
             Definitionsselect.appendChild(option);
           }
