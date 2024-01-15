@@ -48,13 +48,13 @@
             let gallery = this.value
             console.log(gallery);
             console.log('listof defs:' + json.Galleries[gallery].Definitions)
-            // for(var i = 0; i < json.Galleries[this.value].Definitions.length; i++)
-            // {
-            //   let option = document.createElement("option");
-            //   option.value = json.Galleries[this.value].Definitions;
-            //   option.textContent = json.Galleries[this.value].Definitions[i];
-            //   Definitionsselect.appendChild(option);
-            // }
+            for(var i = 0; i < json.Galleries[gallery].Definitions.length; i++)
+            {
+              let option = document.createElement("option");
+              option.value = i;
+              option.textContent = json.Galleries[gallery].Definitions[i];
+              Definitionsselect.appendChild(option);
+            }
           });
         }
 
@@ -64,7 +64,7 @@
             for(var i = 0; i < data.VMs.length; i++)
             {
               let option = document.createElement("option");
-              option.value = data.VMs[i].Name;
+              option.value = i;
               option.textContent = data.VMs[i].Name;
               VMselect.appendChild(option);
             }
