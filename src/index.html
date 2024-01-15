@@ -52,10 +52,10 @@
             console.log('listof defs:' + json.Galleries[gallery].Definitions)
             for(var i = 0; i < json.Galleries[gallery].Definitions.length; i++)
             {
-              console.log(json.Galleries[gallery].Definitions[i]);
+              console.log(json.Galleries[gallery].Definitions[i].Name);
               let option = document.createElement("option");
               option.value = i;
-              option.textContent = json.Galleries[gallery].Definitions[i];
+              option.textContent = json.Galleries[gallery].Definitions[i].Name;
               Definitionselect.appendChild(option);
             }
           });
@@ -83,8 +83,8 @@
               {
                 console.log('def:' + Definitions[y]);
                 let option = document.createElement("option");
-                option.value = Definitions[y];
-                option.textContent = Definitions[y];
+                option.value = Definitions[y].Name;
+                option.textContent = Definitions[y].Name;
                 Definitionselect.appendChild(option);
               }
             }
