@@ -41,7 +41,7 @@
         }
         async function caller() {
           const json = await this.getJSON();
-          console.log(JSON.stringify(json));
+          console.log(JSON.stringify(json)); //check the object has come down
           appendData(json);
           console.log('jsondataobjectis: ' + json);
           Galleryselect.addEventListener('change', function(){
