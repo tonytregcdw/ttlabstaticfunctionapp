@@ -51,7 +51,7 @@
       
       let queryString = objectToQueryString(Selection);
       console.log(queryString);
-      fetch('/createimage?' + queryString)
+      fetch('/api/createimage?code=xqjroIzoMktlC7m5RXOlQ8Bo_woQvbBAcmquPUQz_2q6AzFuDN_Vqg==' + queryString)
         .then(response => response.json())
         .then(data => {
           document.getElementById('output').textContent = JSON.stringify(data);
