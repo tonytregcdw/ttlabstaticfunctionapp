@@ -42,11 +42,12 @@
       e.preventDefault();
       
       let Selection = {
-        VM : document.getElementById('VMselector').value,
+        VMName : json.VMs[VMselect.value].Name,
+        VMResourceGroup : json.VMs[VMselect.value].ResourceGroup,
         Gallery : document.getElementById('Galleryselector').value,
         Definition : document.getElementById('Definitionselector').value
       };  
-
+      
       let queryString = objectToQueryString(Selection);
       console.log(queryString);
       fetch('/createimage?' + queryString)
