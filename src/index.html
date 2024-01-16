@@ -44,8 +44,9 @@
       let Selection = {
         VMName : json.VMs[VMselect.value].Name,
         VMResourceGroup : json.VMs[VMselect.value].ResourceGroup,
-        Gallery : document.getElementById('Galleryselector').value,
-        Definition : document.getElementById('Definitionselector').value
+        GalleryName : json.Galleries[Galleryselect.value].Name,
+        GalleryResourceGroup : json.Galleries[Galleryselect.value].ResourceGroup,
+        DefinitionName : json.Galleries[Galleryselect.value].Definitions[Definitionselect.value].Name
       };  
       
       let queryString = objectToQueryString(Selection);
