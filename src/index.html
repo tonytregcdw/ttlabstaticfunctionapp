@@ -42,6 +42,7 @@
       e.preventDefault();
       
       let Selection = {
+        code : 'xqjroIzoMktlC7m5RXOlQ8Bo_woQvbBAcmquPUQz_2q6AzFuDN_Vqg==',
         VMName : json.VMs[VMselect.value].Name,
         VMResourceGroup : json.VMs[VMselect.value].ResourceGroup,
         GalleryName : json.Galleries[Galleryselect.value].Name,
@@ -51,7 +52,7 @@
       
       let queryString = objectToQueryString(Selection);
       console.log(queryString);
-      fetch('/api/createimage?code=xqjroIzoMktlC7m5RXOlQ8Bo_woQvbBAcmquPUQz_2q6AzFuDN_Vqg==' + queryString)
+      fetch('/api/createimage?' + queryString)
         .then(response => response.json())
         .then(data => {
           document.getElementById('output').textContent = JSON.stringify(data);
