@@ -10,6 +10,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <body>
+  <form id="apiForm">
+    <label for="input">Choose VM, Gallery and Definition:</label><br>
+    <input type="text" id="input" name="input"><br>
+
   <div id="VMs"><p>Gold VMs</p>
     <select id="VMselector"></select>
   </div>
@@ -19,10 +23,40 @@
   <div id="Definitions"><p>Definitions</p>
     <select id="Definitionselector"></select>
   </div>
+  <input type="submit" value="Submit">
+</form>
+
   <main>
     <h1>TT json render</h1>
     <p>Loading content from the function API: <b id="name">...</b></p>
   </main>
+
+  <script>
+    function objectToQueryString(obj) {
+    return Object.keys(obj)
+        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]))
+        .join('&');
+    }
+
+    document.getElementById('apiForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      let Selection = {
+        VM : document.getElementById('VMselector').value,
+        Gallery : document.getElementById('Galleryselector').value,
+        Definition : document.getElementById('Definitionselector').value
+      };  
+
+      let queryString = objectToQueryString(Selection);
+      console.log(queryString);
+      fetch('/createimage?' + queryString)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('output').textContent = JSON.stringify(data);
+        })
+        .catch(error => console.error('Error:', error));
+    });
+    </script>
 
     <script>
         var VMselect = document.getElementById("VMselector");
@@ -50,7 +84,7 @@
             Definitionselect.innerText = null;
             let gallery = this.value
             console.log(gallery);
-            console.log('listof defs:' + json.Galleries[gallery].Definitions)
+            console.log('listof defs:' + json.Galleries[gallery].Definitions.Name)
             updateDefinitions(gallery);
           });
         }
@@ -67,8 +101,6 @@
         }
 
         function appendData(data) {
-            //var VMContainer = document.getElementById("VMs");
-            //var GalleryContainer = document.getElementById("Galleries");
             for(var i = 0; i < data.VMs.length; i++)
             {
               let option = document.createElement("option");
@@ -82,8 +114,7 @@
               option.value = i;
               option.textContent = data.Galleries[i].Name;
               Galleryselect.appendChild(option);
-              console.log('defs:' + data.Galleries[i].Definitions);
-              var Definitions = data.Galleries[i].Definitions;
+              console.log('defs:' + data.Galleries[i].Definitions.Name);
             }
         }
         caller();
