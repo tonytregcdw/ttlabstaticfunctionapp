@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>json test</title>
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<body>
+  <form id="apiForm">
+    <label for="input">Test folder Select VM, Gallery and Definition:</label><br>
+    <div id="VMs"><p>Gold VMs</p>
+      <select id="VMselector"></select>
+    </div>
+    <div id="Galleries"><p>Galleries</p>
+      <select id="Galleryselector"></select>
+    </div>
+    <div id="Definitions"><p>Definitions</p>
+      <select id="Definitionselector"></select>
+    </div>
+    <input type="submit" value="Submit">
+  </form>
+
+
+
+  <main>
+    <p id="output"></p>
+  </main>
+
+  <script>
+    function objectToQueryString(obj) {
+    return Object.keys(obj)
+        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]))
+        .join('&');
+    }
+
+    document.getElementById('apiForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      let Selection = {
+        code : 'xqjroIzoMktlC7m5RXOlQ8Bo_woQvbBAcmquPUQz_2q6AzFuDN_Vqg==',
+        VMName : json.VMs[VMselect.value].Name,
+        VMResourceGroup : json.VMs[VMselect.value].ResourceGroup,
+        GalleryName : json.Galleries[Galleryselect.value].Name,
+        GalleryResourceGroup : json.Galleries[Galleryselect.value].ResourceGroup,
+        DefinitionName : json.Galleries[Galleryselect.value].Definitions[Definitionselect.value].Name
+      };  
+      
+      let queryString = objectToQueryString(Selection);
+      console.log(queryString);
+      fetch('/api/createimage?' + queryString)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('output').textContent = JSON.stringify(data);
+        })
+        .catch(error => console.error('Error:', error));
+    });
+    </script>
+
+    <script>
+        var VMselect = document.getElementById("VMselector");
+        var Galleryselect = document.getElementById("Galleryselector");
+        var Definitionselect = document.getElementById("Definitionselector");
+        var json = {};
+        async function getJSON() {
+          return fetch('/api/function_goldmastervms?code=znlm0jBnVaSRSTUaCvSrJeGLWwXbQ-r_EY353TZpxMtKAzFuxU7Sgw==')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                return data;
+            })
+            .catch(function (err) {
+                console.log('error: ' + err);
+            });
+        }
+        async function caller() {
+          json = await this.getJSON();
+          console.log(JSON.stringify(json)); //check the object has come down
+          appendData(json);
+          updateDefinitions(Galleryselect.value);
+          Galleryselect.addEventListener('change', function(){
+            Definitionselect.innerText = null;
+            let gallery = this.value
+            console.log(gallery);
+            console.log('listof defs:' + json.Galleries[gallery].Definitions.Name)
+            updateDefinitions(gallery);
+          });
+        }
+
+        function updateDefinitions(data) {
+          for(var i = 0; i < json.Galleries[data].Definitions.length; i++)
+            {
+              console.log(json.Galleries[data].Definitions[i].Name);
+              let option = document.createElement("option");
+              option.value = i;
+              option.textContent = json.Galleries[data].Definitions[i].Name;
+              Definitionselect.appendChild(option);
+            }
+        }
+
+        function appendData(data) {
+            for(var i = 0; i < data.VMs.length; i++)
+            {
+              let option = document.createElement("option");
+              option.value = i;
+              option.textContent = data.VMs[i].Name;
+              VMselect.appendChild(option);
+            }
+            for(var i = 0; i < data.Galleries.length; i++)
+            {
+              let option = document.createElement("option");
+              option.value = i;
+              option.textContent = data.Galleries[i].Name;
+              Galleryselect.appendChild(option);
+              console.log('defs:' + data.Galleries[i].Definitions.Name);
+            }
+        }
+        caller();
+    </script>
+
+  </main>
+</body>
+
+</html>
