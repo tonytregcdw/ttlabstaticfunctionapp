@@ -12,17 +12,17 @@
         }
       },
       {
-        "route": "/api/*",
+        "route": "/tapi/*",
         "methods": ["GET"],
         "allowedRoles": ["registeredusers"]
       },
       {
-        "route": "/api/*",
+        "route": "/tapi/*",
         "methods": ["PUT", "POST", "PATCH", "DELETE"],
         "allowedRoles": ["administrator"]
       },
       {
-        "route": "/api/*",
+        "route": "/tapi/*",
         "allowedRoles": ["authenticated"]
       },
       {
