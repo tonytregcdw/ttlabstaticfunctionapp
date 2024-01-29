@@ -55,7 +55,12 @@
         .then(response => response.json())
         .then(data => {
           // update this to grab the statusQueryGetUri
-          document.getElementById('output').textContent = JSON.stringify(data.statusQueryGetUri);
+          //document.getElementById('output').textContent = JSON.stringify(data.statusQueryGetUri);
+          fetch(data.statusQueryGetUri)
+            .then(response => response.json())
+            .then(data => {
+              document.getElementById('output').textContent = JSON.stringify(data);
+            })  
         })
         .catch(error => console.error('Error:', error));
     });
