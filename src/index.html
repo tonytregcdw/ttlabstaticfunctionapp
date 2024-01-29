@@ -41,7 +41,6 @@
       e.preventDefault();
       
       let Selection = {
-        code : 'xqjroIzoMktlC7m5RXOlQ8Bo_woQvbBAcmquPUQz_2q6AzFuDN_Vqg==',
         VMName : json.VMs[VMselect.value].Name,
         VMResourceGroup : json.VMs[VMselect.value].ResourceGroup,
         GalleryName : json.Galleries[Galleryselect.value].Name,
@@ -51,7 +50,7 @@
       
       let queryString = objectToQueryString(Selection);
       console.log(queryString);
-      fetch('/api/createimage?' + queryString)
+      fetch('/api/orchestrators/imageorchestrator?' + queryString)
         .then(response => response.json())
         .then(data => {
           document.getElementById('output').textContent = JSON.stringify(data);
@@ -66,7 +65,7 @@
         var Definitionselect = document.getElementById("Definitionselector");
         var json = {};
         async function getJSON() {
-          return fetch('/api/functiongoldvmlookup?code=znlm0jBnVaSRSTUaCvSrJeGLWwXbQ-r_EY353TZpxMtKAzFuxU7Sgw==')
+          return fetch('/api/functiongoldvmlookup?code=-NDHm5KN9nSMCP05r_ywzQQNHPlxIDM79He5jWrdZs8uAzFu3gr3rw==')
             .then(function (response) {
                 return response.json();
             })
