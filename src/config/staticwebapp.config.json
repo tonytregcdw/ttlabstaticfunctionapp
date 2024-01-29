@@ -2,6 +2,10 @@
     "trailingSlash": "auto",
     "routes": [
       {
+        "route": "/*",
+        "allowedRoles": ["authenticated"]
+      },
+      {
         "route": "/admin/index.html",
         "allowedRoles": ["administrator"]
       },
