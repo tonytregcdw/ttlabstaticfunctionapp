@@ -81,10 +81,10 @@
       "/api": {
         "methods": ["GET", "POST"],
         "backendUri": "https://ttazfunctionpsavd01.azurewebsites.net/api"
-      }
-    },
-    "/runtime/webhooks": {
-      "methods": ["GET", "POST"],
-      "backendUri": "https://ttazfunctionpsavd01.azurewebsites.net/runtime/webhooks"
-    } 
+      },
+      "/runtime/webhooks": {
+        "methods": ["GET"],
+        "backendUri": "https://ttazfunctionpsavd01.azurewebsites.net/runtime/webhooks"
+      } 
+    }
 }
