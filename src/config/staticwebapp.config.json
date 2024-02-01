@@ -80,7 +80,7 @@
     "proxies": {
       "/api": {
         "methods": ["GET", "POST"],
-        "backendUri": "https://ttazfunctionpsavd01.azurewebsites.net/api"
+        "backendUri": "https://ttazfunctionpsavd01.azurewebsites.net/bollapi"
       },
       "/runtime/webhooks/durabletask/instances": {
         "methods": ["GET"],
