@@ -2,6 +2,11 @@
     "trailingSlash": "auto",
     "routes": [
       {
+        "route": "/api/*",
+        "serve": "/api/index.html",
+        "statusCode": 200
+      },
+      {
         "route": "/",
         "allowedRoles": ["authenticated"]
       },
