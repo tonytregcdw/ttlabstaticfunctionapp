@@ -76,5 +76,11 @@
     },
     "mimeTypes": {
       ".json": "text/json"
+    },
+    "proxies": {
+      "/api": {
+        "methods": ["GET", "POST"],
+        "backendUri": "https://ttazfunctionpsavd01.azurewebsites.net/api"
+      }
     }
   }
