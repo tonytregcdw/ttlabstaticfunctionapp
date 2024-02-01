@@ -82,9 +82,9 @@
         "methods": ["GET", "POST"],
         "backendUri": "https://ttazfunctionpsavd01.azurewebsites.net/api"
       },
-      "/runtime/webhooks": {
+      "/runtime/webhooks/durabletask/instances": {
         "methods": ["GET"],
-        "backendUri": "https://ttazfunctionpsavd01.azurewebsites.net/runtime/webhooks"
+        "backendUri": "https://ttazfunctionpsavd01.azurewebsites.net/runtime/webhooks/durabletask/instances"
       } 
     }
 }
