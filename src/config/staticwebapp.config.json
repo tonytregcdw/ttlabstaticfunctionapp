@@ -83,9 +83,9 @@
       ".json": "text/json"
     },
     "proxies": {
-      "/runtime/webhooks/durabletask/instances": {
+      "/wiki": {
         "methods": ["GET"],
-        "backendUri": "https://ttazfunctionpsavd01.azurewebsites.net/runtime/webhooks/durabletask/instances"
+        "backendUri": "https://trickywiki.azurewebsites.net/doku.php"
       } 
     }
 }
