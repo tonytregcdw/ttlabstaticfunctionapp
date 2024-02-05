@@ -81,11 +81,5 @@
     },
     "mimeTypes": {
       ".json": "text/json"
-    },
-    "proxies": {
-      "/wiki": {
-        "methods": ["GET"],
-        "backendUri": "https://trickywiki.azurewebsites.net/doku.php"
-      } 
     }
 }
