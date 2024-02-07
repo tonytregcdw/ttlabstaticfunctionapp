@@ -62,7 +62,7 @@
             fetch(statusfunction)
               .then(response => response.json())
               .then(data => {
-                console.log(data.customStatus)
+                console.log('customstatus:', data.customStatus)
                 if (data.output !== null) {
                     jobfinished = data.output;
                     console.log('jobfinished:', jobfinished);
