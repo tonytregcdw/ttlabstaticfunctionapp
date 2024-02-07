@@ -22,6 +22,8 @@
       <select id="Definitionselector"></select>
     </div>
     <input type="submit" value="Submit">
+    <p id="timerDisplay">Timer: 0</p>
+    <p id="statusDisplay"></p>
   </form>
 
 
@@ -50,6 +52,9 @@
       };  
       
       let queryString = objectToQueryString(Selection);
+      let seconds = 0;
+      const timerDisplay = document.getElementById('timerDisplay');
+      const statusDisplay = document.getElementById('statusDisplay');
       console.log(queryString);
       fetch('/api/orchestrators/imageorchestrator?' + queryString)
         .then(response => response.json())
@@ -63,12 +68,16 @@
               .then(response => response.json())
               .then(data => {
                 console.log('customstatus:', data.customStatus)
+                statusDisplay.textContent = data.customStatus
                 if (data.output !== null) {
                     jobfinished = data.output;
                     console.log('jobfinished:', jobfinished);
                     document.getElementById('output').textContent = JSON.stringify(jobfinished);
                     clearInterval(timer);
-                }
+                  } else {
+                    seconds++;
+                    timerDisplay.textContent = 'Timer: ' + seconds;
+                  }
               })
             .catch(error => console.error('Error:', error));
           }, 1000); // Fetch every 1000 milliseconds (1 second)
