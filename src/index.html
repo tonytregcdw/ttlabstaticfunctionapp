@@ -43,7 +43,8 @@
       e.preventDefault();
       
       let Selection = {
-        code : 'mJlmaDJRGgvURTHOzZV1N3Iboi25_wdiUiKkT7w_UhqZAzFutYUHUQ==',
+        //code : 'mJlmaDJRGgvURTHOzZV1N3Iboi25_wdiUiKkT7w_UhqZAzFutYUHUQ==',
+        code : 'blahblahblah',
         VMName : json.VMs[VMselect.value].Name,
         VMResourceGroupName : json.VMs[VMselect.value].ResourceGroup,
         GalleryName : json.Galleries[Galleryselect.value].Name,
@@ -61,7 +62,7 @@
         .then(data => {
           console.log(data.statusQueryGetUri);
           var statusUrl = encodeURIComponent(data.statusQueryGetUri);
-          const statusfunction = '/api/FunctionStatus?statusuri=' + statusUrl;
+          const statusfunction = '/api/FunctionStatus?code=blahblahblah&statusuri=' + statusUrl;
           let jobfinished = null;
           const timer = setInterval(() => {
             fetch(statusfunction)
@@ -80,7 +81,7 @@
                   }
               })
             .catch(error => console.error('Error:', error));
-          }, 1000); // Fetch every 1000 milliseconds (1 second)
+          }, 10000); // Fetch every 1000 milliseconds (1 second)
         })
       .catch(error => console.error('Error:', error));
     });
@@ -105,7 +106,8 @@
         var Definitionselect = document.getElementById("Definitionselector");
         var json = {};
         async function getJSON() {
-          return fetch('/api/functiongoldvmlookup?code=-NDHm5KN9nSMCP05r_ywzQQNHPlxIDM79He5jWrdZs8uAzFu3gr3rw==')
+          //return fetch('/api/functiongoldvmlookup?code=-NDHm5KN9nSMCP05r_ywzQQNHPlxIDM79He5jWrdZs8uAzFu3gr3rw==')
+          return fetch('/api/functiongoldvmlookup?code=blahblahblah')
             .then(function (response) {
                 return response.json();
             })
