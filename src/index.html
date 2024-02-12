@@ -121,14 +121,13 @@
       scopes: ["https://management.azure.com/user_impersonation"],
     };
 
-    myMSALObj.acquireTokenByDeviceCode(request)
-      .then((response) => {
-        console.log("Access token:", response.accessToken);
-        // Use the access token for API calls
-      })
-      .catch((error) => {
-        console.error("Error acquiring token:", error);
-      });
+    // Acquire a token using device code flow
+    myMSALObj.acquireTokenSilent(request).then((response) => {
+      console.log("Access token:", response.accessToken);
+      // Use the access token to call the desired API (e.g., Microsoft Graph)
+    }).catch((error) => {
+      console.error("Error acquiring token:", error);
+    });
 
 
   </script>
