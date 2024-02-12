@@ -147,78 +147,75 @@
         console.error("Error signing in:", error);
       });
 
+    var VMselect = document.getElementById("VMselector");
+    var Galleryselect = document.getElementById("Galleryselector");
+    var Definitionselect = document.getElementById("Definitionselector");
+    var json = {};
+
+    async function getJSON() {
+      //return fetch('/api/functiongoldvmlookup?code=-NDHm5KN9nSMCP05r_ywzQQNHPlxIDM79He5jWrdZs8uAzFu3gr3rw==')
+      return fetch('/api/functiongoldvmlookup?code=blahblahblah', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ accessToken }),
+      })
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            return data;
+        })
+        .catch(function (err) {
+            console.log('error: ' + err);
+        });
+      }
+
+      async function caller() {
+        json = await this.getJSON();
+        console.log(JSON.stringify(json)); //check the object has come down
+        appendData(json);
+        updateDefinitions(Galleryselect.value);
+        Galleryselect.addEventListener('change', function(){
+          Definitionselect.innerText = null;
+          let gallery = this.value
+          console.log(gallery);
+          console.log('listof defs:' + json.Galleries[gallery].Definitions.Name)
+          updateDefinitions(gallery);
+        });
+      }
+
+      function updateDefinitions(data) {
+        for(var i = 0; i < json.Galleries[data].Definitions.length; i++)
+          {
+            console.log(json.Galleries[data].Definitions[i].Name);
+            let option = document.createElement("option");
+            option.value = i;
+            option.textContent = json.Galleries[data].Definitions[i].Name;
+            Definitionselect.appendChild(option);
+          }
+      }
+
+      function appendData(data) {
+          for(var i = 0; i < data.VMs.length; i++)
+          {
+            let option = document.createElement("option");
+            option.value = i;
+            option.textContent = data.VMs[i].Name;
+            VMselect.appendChild(option);
+          }
+          for(var i = 0; i < data.Galleries.length; i++)
+          {
+            let option = document.createElement("option");
+            option.value = i;
+            option.textContent = data.Galleries[i].Name;
+            Galleryselect.appendChild(option);
+            console.log('defs:' + data.Galleries[i].Definitions.Name);
+          }
+      }
+      caller();
   </script>
-
-    <script>
-        var VMselect = document.getElementById("VMselector");
-        var Galleryselect = document.getElementById("Galleryselector");
-        var Definitionselect = document.getElementById("Definitionselector");
-        var json = {};
-        async function getJSON() {
-          //return fetch('/api/functiongoldvmlookup?code=-NDHm5KN9nSMCP05r_ywzQQNHPlxIDM79He5jWrdZs8uAzFu3gr3rw==')
-          await accessToken;
-          return fetch('/api/functiongoldvmlookup?code=blahblahblah', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ accessToken }),
-          })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                return data;
-            })
-            .catch(function (err) {
-                console.log('error: ' + err);
-            });
-        }
-
-        async function caller() {
-          json = await this.getJSON();
-          console.log(JSON.stringify(json)); //check the object has come down
-          appendData(json);
-          updateDefinitions(Galleryselect.value);
-          Galleryselect.addEventListener('change', function(){
-            Definitionselect.innerText = null;
-            let gallery = this.value
-            console.log(gallery);
-            console.log('listof defs:' + json.Galleries[gallery].Definitions.Name)
-            updateDefinitions(gallery);
-          });
-        }
-
-        function updateDefinitions(data) {
-          for(var i = 0; i < json.Galleries[data].Definitions.length; i++)
-            {
-              console.log(json.Galleries[data].Definitions[i].Name);
-              let option = document.createElement("option");
-              option.value = i;
-              option.textContent = json.Galleries[data].Definitions[i].Name;
-              Definitionselect.appendChild(option);
-            }
-        }
-
-        function appendData(data) {
-            for(var i = 0; i < data.VMs.length; i++)
-            {
-              let option = document.createElement("option");
-              option.value = i;
-              option.textContent = data.VMs[i].Name;
-              VMselect.appendChild(option);
-            }
-            for(var i = 0; i < data.Galleries.length; i++)
-            {
-              let option = document.createElement("option");
-              option.value = i;
-              option.textContent = data.Galleries[i].Name;
-              Galleryselect.appendChild(option);
-              console.log('defs:' + data.Galleries[i].Definitions.Name);
-            }
-        }
-        caller();
-    </script>
 
   </main>
 </body>
