@@ -141,7 +141,7 @@
         // Now you have an authenticated account object
         // Proceed to acquire tokens
         console.log('account is:', response.account);
-        accessToken = acquireToken(response.account);
+        let accessToken = acquireToken(response.account);
         let useraccess = {
           accessToken : accessToken,
           tenantId : response.account.tenantId,
