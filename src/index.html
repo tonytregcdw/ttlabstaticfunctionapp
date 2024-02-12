@@ -159,7 +159,8 @@
     var Definitionselect = document.getElementById("Definitionselector");
     var json = {};
 
-    async function getJSON(useraccess) {
+    async function getJSON() {
+      console.log('POSTing:', useraccess)
       //return fetch('/api/functiongoldvmlookup?code=-NDHm5KN9nSMCP05r_ywzQQNHPlxIDM79He5jWrdZs8uAzFu3gr3rw==')
       return fetch('/api/functiongoldvmlookup?code=blahblahblah', {
         method: 'POST',
