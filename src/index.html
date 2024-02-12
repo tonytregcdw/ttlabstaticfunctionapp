@@ -140,11 +140,15 @@
         console.log("User signed in:", response);
         // Now you have an authenticated account object
         // Proceed to acquire tokens
-        console.log('account is:', response.account)
-        accessToken = acquireToken(response.account);
+        console.log('account is:', response.account);
+        let useraccess = {
+          accessToken : acquireToken(response.account),
+          tenantId : response.account.tenantId,
+          username : response.account.username
+        };  
         // run the first fetch
         //todo - tidy up the order of execution, definition and nesting of functions.
-        caller(accessToken);
+        caller(useraccess);
       })
       .catch((error) => {
         console.error("Error signing in:", error);
@@ -155,14 +159,14 @@
     var Definitionselect = document.getElementById("Definitionselector");
     var json = {};
 
-    async function getJSON(accessToken) {
+    async function getJSON(useraccess) {
       //return fetch('/api/functiongoldvmlookup?code=-NDHm5KN9nSMCP05r_ywzQQNHPlxIDM79He5jWrdZs8uAzFu3gr3rw==')
       return fetch('/api/functiongoldvmlookup?code=blahblahblah', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ accessToken }),
+        body: JSON.stringify({ useraccess }),
       })
         .then(function (response) {
             return response.json();
@@ -175,8 +179,8 @@
         });
       }
 
-      async function caller(accessToken) {
-        json = await this.getJSON(accessToken);
+      async function caller(useraccess) {
+        json = await this.getJSON(useraccess);
         console.log(JSON.stringify(json)); //check the object has come down
         appendData(json);
         updateDefinitions(Galleryselect.value);
