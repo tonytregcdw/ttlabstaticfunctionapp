@@ -118,30 +118,27 @@
 
     const myMSALObj = new msal.PublicClientApplication(msalConfig);
 
-    function acquireToken(account) {
-      const request = {
-        scopes: ["https://management.azure.com/user_impersonation"],
-        account: account,
-      };
-
-      myMSALObj.acquireTokenSilent(request)
-        .then((response) => {
-          console.log("Access token:", response.accessToken);
-          return response.accessToken;
-          // Use the access token for API calls
-        })
-        .catch((error) => {
-          console.error("Error acquiring token:", error);
-        });
-    }
-
     myMSALObj.loginPopup()
       .then((response) => {
         console.log("User signed in:", response);
         // Now you have an authenticated account object
         // Proceed to acquire tokens
         console.log('account is:', response.account);
-        let accessToken = acquireToken(response.account);
+        const request = {
+          scopes: ["https://management.azure.com/user_impersonation"],
+          account: response.account,
+        };
+        //acquire the accesstoken
+        let accessToken = myMSALObj.acquireTokenSilent(request)
+          .then((response) => {
+            console.log("Access token:", response.accessToken);
+            return response.accessToken;
+            // Use the access token for API calls
+          })
+          .catch((error) => {
+            console.error("Error acquiring token:", error);
+          });
+
         let useraccess = {
           accessToken : accessToken,
           tenantId : response.account.tenantId,
