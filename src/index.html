@@ -118,9 +118,10 @@
 
     const myMSALObj = new msal.PublicClientApplication(msalConfig);
 
-    function acquireToken() {
+    function acquireToken(account) {
       const request = {
         scopes: ["https://management.azure.com/user_impersonation"],
+        account: account,
       };
 
       myMSALObj.acquireTokenSilent(request)
@@ -138,7 +139,8 @@
         console.log("User signed in:", response);
         // Now you have an authenticated account object
         // Proceed to acquire tokens
-        acquireToken();
+        console.log('account is:', response.account)
+        acquireToken(response.account);
       })
       .catch((error) => {
         console.error("Error signing in:", error);
