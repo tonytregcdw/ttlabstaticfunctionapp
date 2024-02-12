@@ -142,6 +142,9 @@
         // Proceed to acquire tokens
         console.log('account is:', response.account)
         acquireToken(response.account);
+        // run the first fetch
+        //todo - tidy up the order of execution, definition and nesting of functions.
+        caller();
       })
       .catch((error) => {
         console.error("Error signing in:", error);
@@ -214,7 +217,7 @@
             console.log('defs:' + data.Galleries[i].Definitions.Name);
           }
       }
-      caller();
+      
   </script>
 
   </main>
