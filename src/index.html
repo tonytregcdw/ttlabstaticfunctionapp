@@ -122,23 +122,24 @@
       .then((response) => {
         console.log("User signed in:", response);
         // Now you have an authenticated account object
+        const request = {
+          scopes: ["https://management.azure.com/user_impersonation"],
+        };
+
+        // Acquire a token using device code flow
+        myMSALObj.acquireTokenSilent(request).then((response) => {
+          console.log("Access token:", response.accessToken);
+          // Use the access token to call the desired API (e.g., Microsoft Graph)
+        }).catch((error) => {
+          console.error("Error acquiring token:", error);
+        });
       })
       .catch((error) => {
         console.error("Error signing in:", error);
       });
 
 
-    const request = {
-      scopes: ["https://management.azure.com/user_impersonation"],
-    };
 
-    // Acquire a token using device code flow
-    myMSALObj.acquireTokenSilent(request).then((response) => {
-      console.log("Access token:", response.accessToken);
-      // Use the access token to call the desired API (e.g., Microsoft Graph)
-    }).catch((error) => {
-      console.error("Error acquiring token:", error);
-    });
 
 
   </script>
