@@ -127,6 +127,7 @@
       myMSALObj.acquireTokenSilent(request)
         .then((response) => {
           console.log("Access token:", response.accessToken);
+          const accessToken = response.accessToken;
           // Use the access token for API calls
         })
         .catch((error) => {
@@ -155,7 +156,14 @@
         var json = {};
         async function getJSON() {
           //return fetch('/api/functiongoldvmlookup?code=-NDHm5KN9nSMCP05r_ywzQQNHPlxIDM79He5jWrdZs8uAzFu3gr3rw==')
-          return fetch('/api/functiongoldvmlookup?code=blahblahblah')
+
+          return fetch('/api/functiongoldvmlookup?code=blahblahblah', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ accessToken }),
+          })
             .then(function (response) {
                 return response.json();
             })
@@ -166,6 +174,7 @@
                 console.log('error: ' + err);
             });
         }
+
         async function caller() {
           json = await this.getJSON();
           console.log(JSON.stringify(json)); //check the object has come down
