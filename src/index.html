@@ -141,11 +141,12 @@
         // Now you have an authenticated account object
         // Proceed to acquire tokens
         console.log('account is:', response.account);
+        accessToken = acquireToken(response.account);
         let useraccess = {
-          accessToken : acquireToken(response.account),
+          accessToken : accessToken,
           tenantId : response.account.tenantId,
           username : response.account.username
-        };  
+        };
         // run the first fetch
         //todo - tidy up the order of execution, definition and nesting of functions.
         caller(useraccess);
