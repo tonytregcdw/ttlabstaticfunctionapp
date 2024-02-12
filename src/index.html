@@ -103,6 +103,7 @@
   <script src="https://alcdn.msauth.net/browser/2.17.0/js/msal-browser.min.js"></script>
 
   <script>
+
     const msalConfig = {
       auth: {
         clientId: "0f790682-c2d8-46d0-a22d-e5760fc93ff3",
@@ -117,30 +118,31 @@
 
     const myMSALObj = new msal.PublicClientApplication(msalConfig);
 
+    function acquireToken() {
+      const request = {
+        scopes: ["https://management.azure.com/user_impersonation"],
+      };
+
+      myMSALObj.acquireTokenSilent(request)
+        .then((response) => {
+          console.log("Access token:", response.accessToken);
+          // Use the access token for API calls
+        })
+        .catch((error) => {
+          console.error("Error acquiring token:", error);
+        });
+    }
 
     myMSALObj.loginPopup()
       .then((response) => {
         console.log("User signed in:", response);
         // Now you have an authenticated account object
-        const request = {
-          scopes: ["https://management.azure.com/user_impersonation"],
-        };
-
-        // Acquire a token using device code flow
-        myMSALObj.acquireTokenSilent(request).then((response) => {
-          console.log("Access token:", response.accessToken);
-          // Use the access token to call the desired API (e.g., Microsoft Graph)
-        }).catch((error) => {
-          console.error("Error acquiring token:", error);
-        });
+        // Proceed to acquire tokens
+        acquireToken();
       })
       .catch((error) => {
         console.error("Error signing in:", error);
       });
-
-
-
-
 
   </script>
 
