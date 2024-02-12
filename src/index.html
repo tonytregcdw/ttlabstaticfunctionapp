@@ -127,7 +127,7 @@
       myMSALObj.acquireTokenSilent(request)
         .then((response) => {
           console.log("Access token:", response.accessToken);
-          const accessToken = response.accessToken;
+          return response.accessToken;
           // Use the access token for API calls
         })
         .catch((error) => {
@@ -141,10 +141,10 @@
         // Now you have an authenticated account object
         // Proceed to acquire tokens
         console.log('account is:', response.account)
-        acquireToken(response.account);
+        accessToken = await this.acquireToken(response.account);
         // run the first fetch
         //todo - tidy up the order of execution, definition and nesting of functions.
-        caller();
+        caller(accessToken);
       })
       .catch((error) => {
         console.error("Error signing in:", error);
@@ -155,7 +155,7 @@
     var Definitionselect = document.getElementById("Definitionselector");
     var json = {};
 
-    async function getJSON() {
+    async function getJSON(accessToken) {
       //return fetch('/api/functiongoldvmlookup?code=-NDHm5KN9nSMCP05r_ywzQQNHPlxIDM79He5jWrdZs8uAzFu3gr3rw==')
       return fetch('/api/functiongoldvmlookup?code=blahblahblah', {
         method: 'POST',
@@ -175,8 +175,8 @@
         });
       }
 
-      async function caller() {
-        json = await this.getJSON();
+      async function caller(accessToken) {
+        json = await this.getJSON(accessToken);
         console.log(JSON.stringify(json)); //check the object has come down
         appendData(json);
         updateDefinitions(Galleryselect.value);
