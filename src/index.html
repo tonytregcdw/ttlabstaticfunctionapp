@@ -129,24 +129,24 @@
           account: response.account,
         };
         //acquire the accesstoken
-        let accessToken = myMSALObj.acquireTokenSilent(request)
+        myMSALObj.acquireTokenSilent(request)
           .then((response) => {
             console.log("Access token:", response.accessToken);
-            return response.accessToken;
-            // Use the access token for API calls
+            accessToken = response.accessToken;
+            console.log("returned accessToken is:", accessToken)
+            let useraccess = {
+              accessToken : accessToken,
+              tenantId : response.account.tenantId,
+              username : response.account.username
+            };
+            // run the first fetch
+            //todo - tidy up the order of execution, definition and nesting of functions.
+            // Use the access token for API caller
+            caller(useraccess);
           })
           .catch((error) => {
             console.error("Error acquiring token:", error);
           });
-        console.log("returned accessToken is:", accessToken)
-        let useraccess = {
-          accessToken : accessToken,
-          tenantId : response.account.tenantId,
-          username : response.account.username
-        };
-        // run the first fetch
-        //todo - tidy up the order of execution, definition and nesting of functions.
-        caller(useraccess);
       })
       .catch((error) => {
         console.error("Error signing in:", error);
