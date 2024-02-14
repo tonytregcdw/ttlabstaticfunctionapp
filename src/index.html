@@ -118,7 +118,7 @@
 
 
 
-    async function getAccessToken(callback) {
+    function getAccessToken(callback) {
       const msalConfig = {
         auth: {
           clientId: "0f790682-c2d8-46d0-a22d-e5760fc93ff3",
@@ -170,6 +170,7 @@
         .catch((error) => {
           console.error("Error signing in:", error);
         });
+      console.log("calling back token:", useraccess)
       callback(useraccess);
     };
 
