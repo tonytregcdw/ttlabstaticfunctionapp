@@ -133,11 +133,11 @@
 
       const myMSALObj = new msal.PublicClientApplication(msalConfig);
 
-      let useraccess = {
-        accessToken : '',
-        tenantId : '',
-        AccountId : ''
-      };
+      // let useraccess = {
+      //   accessToken : '',
+      //   tenantId : '',
+      //   AccountId : ''
+      // };
 
       myMSALObj.loginPopup()
         .then((response) => {
@@ -160,8 +160,9 @@
                 tenantId : response.account.tenantId,
                 AccountId : response.account.username
               };
-              //this needs fixing to return from the base function.
-            
+              //this needs fixing to return to the base function.
+              console.log("calling back token:", useraccess)
+              callback(useraccess);
             })
             .catch((error) => {
               console.error("Error acquiring token:", error);
@@ -170,8 +171,6 @@
         .catch((error) => {
           console.error("Error signing in:", error);
         });
-      console.log("calling back token:", useraccess)
-      callback(useraccess);
     };
 
 
