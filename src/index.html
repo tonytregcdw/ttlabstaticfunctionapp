@@ -58,40 +58,44 @@
       const timerDisplay = document.getElementById('timerDisplay');
       const statusDisplay = document.getElementById('statusDisplay');
       console.log(queryString);
-      let useraccess = getAccessToken();
-      fetch('/api/orchestrators/imageorchestrator?' + queryString, {
+      //let useraccess = getAccessToken();
+      
+      getAccessToken((useraccess) => {
+        console.log("starting job using token:", useraccess);
+        fetch('/api/orchestrators/imageorchestrator?' + queryString, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ useraccess }),
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data.statusQueryGetUri);
-          var statusUrl = encodeURIComponent(data.statusQueryGetUri);
-          const statusfunction = '/api/FunctionStatus?code=blahblahblah&statusuri=' + statusUrl;
-          let jobfinished = null;
-          const timer = setInterval(() => {
-            fetch(statusfunction)
-              .then(response => response.json())
-              .then(data => {
-                console.log('customstatus:', data.customStatus)
-                statusDisplay.textContent = data.customStatus
-                if (data.output !== null) {
-                    jobfinished = data.output;
-                    console.log('jobfinished:', jobfinished);
-                    document.getElementById('output').textContent = JSON.stringify(jobfinished);
-                    clearInterval(timer);
-                  } else {
-                    seconds++;
-                    timerDisplay.textContent = 'Timer: ' + seconds;
-                  }
-              })
-            .catch(error => console.error('Error:', error));
-          }, 10000); // Fetch every 1000 milliseconds (1 second)
         })
-      .catch(error => console.error('Error:', error));
+          .then(response => response.json())
+          .then(data => {
+            console.log(data.statusQueryGetUri);
+            var statusUrl = encodeURIComponent(data.statusQueryGetUri);
+            const statusfunction = '/api/FunctionStatus?code=blahblahblah&statusuri=' + statusUrl;
+            let jobfinished = null;
+            const timer = setInterval(() => {
+              fetch(statusfunction)
+                .then(response => response.json())
+                .then(data => {
+                  console.log('customstatus:', data.customStatus)
+                  statusDisplay.textContent = data.customStatus
+                  if (data.output !== null) {
+                      jobfinished = data.output;
+                      console.log('jobfinished:', jobfinished);
+                      document.getElementById('output').textContent = JSON.stringify(jobfinished);
+                      clearInterval(timer);
+                    } else {
+                      seconds++;
+                      timerDisplay.textContent = 'Timer: ' + seconds;
+                    }
+                })
+              .catch(error => console.error('Error:', error));
+            }, 10000); // Fetch every 1000 milliseconds (1 second)
+          })
+        .catch(error => console.error('Error:', error));
+      });
     });
     </script>
 
@@ -114,7 +118,7 @@
 
 
 
-    async function getAccessToken() {
+    async function getAccessToken(callback) {
       const msalConfig = {
         auth: {
           clientId: "0f790682-c2d8-46d0-a22d-e5760fc93ff3",
@@ -166,7 +170,7 @@
         .catch((error) => {
           console.error("Error signing in:", error);
         });
-      return useraccess;
+      callback(useraccess);
     };
 
 
@@ -174,8 +178,10 @@
     const Galleryselect = document.getElementById("Galleryselector");
     const Definitionselect = document.getElementById("Definitionselector");
     var json = {};
-    let useraccess = getAccessToken();
-    caller(useraccess);
+    getAccessToken((useraccess) => {
+        console.log("performing lookup using token:", useraccess);
+        caller(useraccess);
+    });
 
     async function getJSON(useraccess) {
       console.log('POSTing:', useraccess)
