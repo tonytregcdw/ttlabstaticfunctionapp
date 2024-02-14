@@ -58,6 +58,7 @@
       const timerDisplay = document.getElementById('timerDisplay');
       const statusDisplay = document.getElementById('statusDisplay');
       console.log(queryString);
+      let useraccess = getAccessToken();
       fetch('/api/orchestrators/imageorchestrator?' + queryString, {
         method: 'POST',
         headers: {
