@@ -50,6 +50,7 @@
         GalleryName : json.Galleries[Galleryselect.value].Name,
         GalleryResourceGroup : json.Galleries[Galleryselect.value].ResourceGroup,
         DefinitionName : json.Galleries[Galleryselect.value].Definitions[Definitionselect.value].Name
+        
       };  
       
       let queryString = objectToQueryString(Selection);
@@ -57,7 +58,13 @@
       const timerDisplay = document.getElementById('timerDisplay');
       const statusDisplay = document.getElementById('statusDisplay');
       console.log(queryString);
-      fetch('/api/orchestrators/imageorchestrator?' + queryString)
+      fetch('/api/orchestrators/imageorchestrator?' + queryString, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ useraccess }),
+      })
         .then(response => response.json())
         .then(data => {
           console.log(data.statusQueryGetUri);
@@ -104,58 +111,70 @@
 
   <script>
 
-    const msalConfig = {
-      auth: {
-        clientId: "0f790682-c2d8-46d0-a22d-e5760fc93ff3",
-        authority: "https://login.microsoftonline.com/6f5b157f-d392-4f88-8196-39c50f92b6c9",
-        redirectUri: "https://avdgoldimage.az.trickyjoe.com/", // Your redirect URI
-      },
-      cache: {
-        cacheLocation: "sessionStorage",
-        storeAuthStateInCookie: false,
-      },
+
+
+    async function getAccessToken() {
+      const msalConfig = {
+        auth: {
+          clientId: "0f790682-c2d8-46d0-a22d-e5760fc93ff3",
+          authority: "https://login.microsoftonline.com/6f5b157f-d392-4f88-8196-39c50f92b6c9",
+          redirectUri: "https://avdgoldimage.az.trickyjoe.com/", // Your redirect URI
+        },
+        cache: {
+          cacheLocation: "sessionStorage",
+          storeAuthStateInCookie: false,
+        },
+      };
+
+      const myMSALObj = new msal.PublicClientApplication(msalConfig);
+
+      let useraccess = {
+        accessToken : '',
+        tenantId : '',
+        AccountId : ''
+      };
+
+      myMSALObj.loginPopup()
+        .then((response) => {
+          console.log("User signed in:", response);
+          // Now you have an authenticated account object
+          // Proceed to acquire tokens
+          console.log('account is:', response.account);
+          const request = {
+            scopes: ["https://management.azure.com/user_impersonation"],
+            account: response.account,
+          };
+          //acquire the accesstoken
+          myMSALObj.acquireTokenSilent(request)
+            .then((response) => {
+              console.log("Access token:", response.accessToken);
+              accessToken = response.accessToken;
+              console.log("returned accessToken is:", accessToken)
+              useraccess = {
+                accessToken : accessToken,
+                tenantId : response.account.tenantId,
+                AccountId : response.account.username
+              };
+              //this needs fixing to return from the base function.
+            
+            })
+            .catch((error) => {
+              console.error("Error acquiring token:", error);
+            });
+        })
+        .catch((error) => {
+          console.error("Error signing in:", error);
+        });
+      return useraccess;
     };
 
-    const myMSALObj = new msal.PublicClientApplication(msalConfig);
 
-    myMSALObj.loginPopup()
-      .then((response) => {
-        console.log("User signed in:", response);
-        // Now you have an authenticated account object
-        // Proceed to acquire tokens
-        console.log('account is:', response.account);
-        const request = {
-          scopes: ["https://management.azure.com/user_impersonation"],
-          account: response.account,
-        };
-        //acquire the accesstoken
-        myMSALObj.acquireTokenSilent(request)
-          .then((response) => {
-            console.log("Access token:", response.accessToken);
-            accessToken = response.accessToken;
-            console.log("returned accessToken is:", accessToken)
-            let useraccess = {
-              accessToken : accessToken,
-              tenantId : response.account.tenantId,
-              AccountId : response.account.username
-            };
-            // run the first fetch
-            //todo - tidy up the order of execution, definition and nesting of functions.
-            // Use the access token for API caller
-            caller(useraccess);
-          })
-          .catch((error) => {
-            console.error("Error acquiring token:", error);
-          });
-      })
-      .catch((error) => {
-        console.error("Error signing in:", error);
-      });
-
-    var VMselect = document.getElementById("VMselector");
-    var Galleryselect = document.getElementById("Galleryselector");
-    var Definitionselect = document.getElementById("Definitionselector");
+    const VMselect = document.getElementById("VMselector");
+    const Galleryselect = document.getElementById("Galleryselector");
+    const Definitionselect = document.getElementById("Definitionselector");
     var json = {};
+    let useraccess = getAccessToken();
+    caller(useraccess);
 
     async function getJSON(useraccess) {
       console.log('POSTing:', useraccess)
