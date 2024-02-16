@@ -11,7 +11,10 @@
 
 <body>
   <form id="apiForm">
-    <label for="input">Select Master VM, Gallery and Definition:</label><br>
+    <label for="input">Select Subscription, Master VM, Gallery and Definition:</label><br>
+    <div id="Subscriptions"><p>Subscriptions</p>
+      <select id="Subselector"></select>
+    </div>
     <div id="VMs"><p>Gold VMs</p>
       <select id="VMselector"></select>
     </div>
@@ -173,17 +176,17 @@
         });
     };
 
-
+    const Subselect = document.getElementById("Subselector");
     const VMselect = document.getElementById("VMselector");
     const Galleryselect = document.getElementById("Galleryselector");
     const Definitionselect = document.getElementById("Definitionselector");
-    var json = {};
+    var azresources = {}; //change this to let and pass it down the line.
     getAccessToken((useraccess) => {
         console.log("performing lookup using token:", useraccess);
-        caller(useraccess);
+        callerazresources(useraccess);
     });
 
-    async function getJSON(useraccess) {
+    async function getJSONazresources(useraccess) {
       console.log('POSTing:', useraccess)
       //return fetch('/api/functiongoldvmlookup?code=-NDHm5KN9nSMCP05r_ywzQQNHPlxIDM79He5jWrdZs8uAzFu3gr3rw==')
       return fetch('/api/functiongoldvmlookup?code=blahblahblah', {
@@ -204,11 +207,20 @@
         });
       }
 
-      async function caller(useraccess) {
-        json = await this.getJSON(useraccess);
-        console.log(JSON.stringify(json)); //check the object has come down
-        appendData(json);
+      async function callerazresources(useraccess) {
+        azresources = await this.getJSONazresources(useraccess);
+        console.log(JSON.stringify(azresources)); //check the object has come down
+        appendData(azresources);
         updateDefinitions(Galleryselect.value);
+//todo: change all selectors to cascade from the subscriptions selector
+        Subselect.addEventListener('change', function(){
+          Definitionselect.innerText = null;
+          let subscription = this.value
+          console.log(subscription);
+          console.log('listof VMs:' + azresources.Subscription[subscription].VMs.Name)
+          updateResources(subscription);
+        });
+
         Galleryselect.addEventListener('change', function(){
           Definitionselect.innerText = null;
           let gallery = this.value
@@ -218,13 +230,24 @@
         });
       }
 
-      function updateDefinitions(data) {
-        for(var i = 0; i < json.Galleries[data].Definitions.length; i++)
+      function updateResources(Subscriptiondata) {
+        for(var i = 0; i < azresources.Galleries[Gallerydata].Definitions.length; i++)
           {
-            console.log(json.Galleries[data].Definitions[i].Name);
+            console.log(azresources.Galleries[Gallerydata].Definitions[i].Name);
             let option = document.createElement("option");
             option.value = i;
-            option.textContent = json.Galleries[data].Definitions[i].Name;
+            option.textContent = azresources.Galleries[Gallerydata].Definitions[i].Name;
+            Definitionselect.appendChild(option);
+          }
+      }
+
+      function updateDefinitions(Gallerydata) {
+        for(var i = 0; i < azresources.Galleries[Gallerydata].Definitions.length; i++)
+          {
+            console.log(azresources.Galleries[Gallerydata].Definitions[i].Name);
+            let option = document.createElement("option");
+            option.value = i;
+            option.textContent = azresources.Galleries[Gallerydata].Definitions[i].Name;
             Definitionselect.appendChild(option);
           }
       }
