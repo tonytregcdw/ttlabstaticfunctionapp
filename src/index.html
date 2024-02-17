@@ -276,8 +276,8 @@
         gallery.Definitions.forEach(definition => {
           console.log("found a def",definition)
           const option = document.createElement('option');
-          option.text = definition.Name;
-          option.value = definition.Name;
+          option.text = definition;
+          option.value = definition;
           definitionSelect.add(option);
         });
     });
