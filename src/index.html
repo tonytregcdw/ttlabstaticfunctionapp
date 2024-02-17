@@ -50,11 +50,12 @@
       let Selection = {
         //code : 'mJlmaDJRGgvURTHOzZV1N3Iboi25_wdiUiKkT7w_UhqZAzFutYUHUQ==',
         code : 'blahblahblah',
-        VMName : json.VMs[VMselect.value].Name,
-        VMResourceGroupName : json.VMs[VMselect.value].ResourceGroup,
-        GalleryName : json.Galleries[Galleryselect.value].Name,
-        GalleryResourceGroup : json.Galleries[Galleryselect.value].ResourceGroup,
-        DefinitionName : json.Galleries[Galleryselect.value].Definitions[Definitionselect.value].Name
+        Subscription : azresources.SubscriptionId[Subselect.value].Name,
+        VMName : azresources.VMs[VMselect.value].Name,
+        VMResourceGroupName : azresources.VMs[VMselect.value].ResourceGroup,
+        GalleryName : azresources.Galleries[Galleryselect.value].Name,
+        GalleryResourceGroup : azresources.Galleries[Galleryselect.value].ResourceGroup,
+        DefinitionName : azresources.Galleries[Galleryselect.value].Definitions[Definitionselect.value].Name
         
       };  
       
@@ -212,7 +213,7 @@
   const subscriptionSelect = document.getElementById('Subselector');
   const gallerySelect = document.getElementById('Galleryselector');
   const definitionSelect = document.getElementById('Definitionselector');
-  const vmSelect = document.getElementById('vmSeVMselectorlect');
+  const vmSelect = document.getElementById('VMselector');
   var azresources = {}; //change this to let and pass it down the line.
 
   getAccessToken((useraccess) => {
