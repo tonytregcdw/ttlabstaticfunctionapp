@@ -256,9 +256,9 @@
   // Update the Galleries, Definitions, and VMs select elements when the Subscription changes
   subscriptionSelect.addEventListener('change', () => {
     // Clear the Galleries, Definitions, and VMs select elements
-    gallerySelect.innerHTML = '';
-    definitionSelect.innerHTML = '';
-    vmSelect.innerHTML = '';
+    gallerySelect.innerText = null;
+    definitionSelect.innerText = null;
+    vmSelect.innerText = null;
   
     // Get the selected Subscription
     const selectedSubscription = azresources.Subscriptions.find(subscription => subscription.SubscriptionId === subscriptionSelect.value);
@@ -274,7 +274,7 @@
     // Update the Definitions select element when the Gallery changes
     gallerySelect.addEventListener('change', () => {
         // Clear the Definitions select element
-        definitionSelect.innerHTML = '';
+        definitionSelect.innerText = null;
   
         // Get the selected Gallery
         const selectedGallery = selectedSubscription.Galleries.find(gallery => gallery.Name === gallerySelect.value);
