@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -119,8 +121,6 @@
 
   <script>
 
-
-
     function getAccessToken(callback) {
       const msalConfig = {
         auth: {
@@ -175,13 +175,47 @@
           console.error("Error signing in:", error);
         });
     };
+</script>
 
-    const Subselect = document.getElementById("Subselector");
-    const VMselect = document.getElementById("VMselector");
-    const Galleryselect = document.getElementById("Galleryselector");
-    const Definitionselect = document.getElementById("Definitionselector");
-    var azresources = {}; //change this to let and pass it down the line.
-    getAccessToken((useraccess) => {
+<script>
+  //new stuff
+  // const azresources = {
+  //   "Subscriptions": [
+  //       {
+  //           "Galleries": [
+  //               {
+  //                   "Definitions": [
+  //                       "@{Name=ttdef1}",
+  //                       "@{Name=ttdef2}"
+  //                   ],
+  //                   "Name": "ttavdgallery01",
+  //                   "ResourceGroup": "TT_AVD_RG"
+  //               }
+  //           ],
+  //           "VMs": [
+  //               {
+  //                   "Name": "vm-TTAVDGOLD01",
+  //                   "ResourceGroup": "TT_AVD_RG"
+  //               }
+  //           ],
+  //           "SubscriptionId": "a2d3df79-3372-479d-83b8-7140c9f56b5c"
+  //       },
+  //       {
+  //           "Galleries": [],
+  //           "VMs": [],
+  //           "SubscriptionId": "a2d3df79-3372-479d-83b8-7140c9f56b5c"
+  //       }
+  //   ]
+  // };
+  
+  // Get the select elements
+  const subscriptionSelect = document.getElementById('Subselector');
+  const gallerySelect = document.getElementById('Galleryselector');
+  const definitionSelect = document.getElementById('Definitionselector');
+  const vmSelect = document.getElementById('vmSeVMselectorlect');
+  var azresources = {}; //change this to let and pass it down the line.
+
+  getAccessToken((useraccess) => {
         console.log("performing lookup using token:", useraccess);
         callerazresources(useraccess);
     });
@@ -206,69 +240,163 @@
             console.log('error: ' + err);
         });
       }
-
-      async function callerazresources(useraccess) {
-        azresources = await this.getJSONazresources(useraccess);
-        console.log(JSON.stringify(azresources)); //check the object has come down
-        appendData(azresources);
-        updateDefinitions(Galleryselect.value);
-//todo: change all selectors to cascade from the subscriptions selector
-        Subselect.addEventListener('change', function(){
-          Definitionselect.innerText = null;
-          let subscription = this.value
-          console.log(subscription);
-          console.log('listof VMs:' + azresources.Subscription[subscription].VMs.Name)
-          updateResources(subscription);
+  async function callerazresources(useraccess) {
+    //Does this need to be in a function??
+    azresources = await this.getJSONazresources(useraccess);
+    console.log(JSON.stringify(azresources)); //check the object has come down
+  }
+  // Populate the select element for Subscriptions
+  azresources.Subscriptions.forEach(subscription => {
+    const option = document.createElement('option');
+    option.text = subscription.SubscriptionId;
+    option.value = subscription.SubscriptionId;
+    subscriptionSelect.add(option);
+  });
+  
+  // Update the Galleries, Definitions, and VMs select elements when the Subscription changes
+  subscriptionSelect.addEventListener('change', () => {
+    // Clear the Galleries, Definitions, and VMs select elements
+    gallerySelect.innerHTML = '';
+    definitionSelect.innerHTML = '';
+    vmSelect.innerHTML = '';
+  
+    // Get the selected Subscription
+    const selectedSubscription = azresources.Subscriptions.find(subscription => subscription.SubscriptionId === subscriptionSelect.value);
+  
+    // Populate the select element for Galleries
+    selectedSubscription.Galleries.forEach(gallery => {
+        const option = document.createElement('option');
+        option.text = gallery.Name;
+        option.value = gallery.Name;
+        gallerySelect.add(option);
+    });
+  
+    // Update the Definitions select element when the Gallery changes
+    gallerySelect.addEventListener('change', () => {
+        // Clear the Definitions select element
+        definitionSelect.innerHTML = '';
+  
+        // Get the selected Gallery
+        const selectedGallery = selectedSubscription.Galleries.find(gallery => gallery.Name === gallerySelect.value);
+  
+        // Populate the select element for Definitions
+        selectedGallery.Definitions.forEach(definition => {
+            const option = document.createElement('option');
+            option.text = definition;
+            option.value = definition;
+            definitionSelect.add(option);
         });
+    });
+  
+    // Populate the select element for VMs
+    selectedSubscription.VMs.forEach(vm => {
+        const option = document.createElement('option');
+        option.text = vm.Name;
+        option.value = vm.Name;
+        vmSelect.add(option);
+    });
+  });
+  
+  // Trigger the change event to populate the Galleries, Definitions, and VMs select elements initially
+  subscriptionSelect.dispatchEvent(new Event('change'));
+  //new stuff
+</script>
+  
 
-        Galleryselect.addEventListener('change', function(){
-          Definitionselect.innerText = null;
-          let gallery = this.value
-          console.log(gallery);
-          console.log('listof defs:' + json.Galleries[gallery].Definitions.Name)
-          updateDefinitions(gallery);
-        });
-      }
+<script>
+//     const Subselect = document.getElementById("Subselector");
+//     const VMselect = document.getElementById("VMselector");
+//     const Galleryselect = document.getElementById("Galleryselector");
+//     const Definitionselect = document.getElementById("Definitionselector");
+//     var azresources = {}; //change this to let and pass it down the line.
+//     getAccessToken((useraccess) => {
+//         console.log("performing lookup using token:", useraccess);
+//         callerazresources(useraccess);
+//     });
 
-      function updateResources(Subscriptiondata) {
-        for(var i = 0; i < azresources.Galleries[Gallerydata].Definitions.length; i++)
-          {
-            console.log(azresources.Galleries[Gallerydata].Definitions[i].Name);
-            let option = document.createElement("option");
-            option.value = i;
-            option.textContent = azresources.Galleries[Gallerydata].Definitions[i].Name;
-            Definitionselect.appendChild(option);
-          }
-      }
+//     async function getJSONazresources(useraccess) {
+//       console.log('POSTing:', useraccess)
+//       //return fetch('/api/functiongoldvmlookup?code=-NDHm5KN9nSMCP05r_ywzQQNHPlxIDM79He5jWrdZs8uAzFu3gr3rw==')
+//       return fetch('/api/functiongoldvmlookup?code=blahblahblah', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ useraccess }),
+//       })
+//         .then(function (response) {
+//             return response.json();
+//         })
+//         .then(function (data) {
+//             return data;
+//         })
+//         .catch(function (err) {
+//             console.log('error: ' + err);
+//         });
+//       }
 
-      function updateDefinitions(Gallerydata) {
-        for(var i = 0; i < azresources.Galleries[Gallerydata].Definitions.length; i++)
-          {
-            console.log(azresources.Galleries[Gallerydata].Definitions[i].Name);
-            let option = document.createElement("option");
-            option.value = i;
-            option.textContent = azresources.Galleries[Gallerydata].Definitions[i].Name;
-            Definitionselect.appendChild(option);
-          }
-      }
+//       async function callerazresources(useraccess) {
+//         azresources = await this.getJSONazresources(useraccess);
+//         console.log(JSON.stringify(azresources)); //check the object has come down
+//         appendData(azresources);
+//         updateDefinitions(Galleryselect.value);
+// //todo: change all selectors to cascade from the subscriptions selector
+//         Subselect.addEventListener('change', function(){
+//           Definitionselect.innerText = null;
+//           let subscription = this.value
+//           console.log(subscription);
+//           console.log('listof VMs:' + azresources.Subscription[subscription].VMs.Name)
+//           updateResources(subscription);
+//         });
 
-      function appendData(data) {
-          for(var i = 0; i < data.VMs.length; i++)
-          {
-            let option = document.createElement("option");
-            option.value = i;
-            option.textContent = data.VMs[i].Name;
-            VMselect.appendChild(option);
-          }
-          for(var i = 0; i < data.Galleries.length; i++)
-          {
-            let option = document.createElement("option");
-            option.value = i;
-            option.textContent = data.Galleries[i].Name;
-            Galleryselect.appendChild(option);
-            console.log('defs:' + data.Galleries[i].Definitions.Name);
-          }
-      }
+//         Galleryselect.addEventListener('change', function(){
+//           Definitionselect.innerText = null;
+//           let gallery = this.value
+//           console.log(gallery);
+//           console.log('listof defs:' + json.Galleries[gallery].Definitions.Name)
+//           updateDefinitions(gallery);
+//         });
+//       }
+
+//       function updateResources(Subscriptiondata) {
+//         for(var i = 0; i < azresources.Galleries[Gallerydata].Definitions.length; i++)
+//           {
+//             console.log(azresources.Galleries[Gallerydata].Definitions[i].Name);
+//             let option = document.createElement("option");
+//             option.value = i;
+//             option.textContent = azresources.Galleries[Gallerydata].Definitions[i].Name;
+//             Definitionselect.appendChild(option);
+//           }
+//       }
+
+//       function updateDefinitions(Gallerydata) {
+//         for(var i = 0; i < azresources.Galleries[Gallerydata].Definitions.length; i++)
+//           {
+//             console.log(azresources.Galleries[Gallerydata].Definitions[i].Name);
+//             let option = document.createElement("option");
+//             option.value = i;
+//             option.textContent = azresources.Galleries[Gallerydata].Definitions[i].Name;
+//             Definitionselect.appendChild(option);
+//           }
+//       }
+
+//       function appendData(data) {
+//           for(var i = 0; i < data.VMs.length; i++)
+//           {
+//             let option = document.createElement("option");
+//             option.value = i;
+//             option.textContent = data.VMs[i].Name;
+//             VMselect.appendChild(option);
+//           }
+//           for(var i = 0; i < data.Galleries.length; i++)
+//           {
+//             let option = document.createElement("option");
+//             option.value = i;
+//             option.textContent = data.Galleries[i].Name;
+//             Galleryselect.appendChild(option);
+//             console.log('defs:' + data.Galleries[i].Definitions.Name);
+//           }
+//       }
       
   </script>
 
