@@ -270,6 +270,16 @@
         option.text = gallery.Name;
         option.value = gallery.Name;
         gallerySelect.add(option);
+
+        // put this into a function as repeated further down...
+        // Populate the select element for Definitions
+        gallery.Definitions.forEach(definition => {
+          console.log("found a def",definition)
+          const option = document.createElement('option');
+          option.text = definition;
+          option.value = definition;
+          definitionSelect.add(option);
+        });
     });
   
     // Update the Definitions select element when the Gallery changes
@@ -283,10 +293,10 @@
         // Populate the select element for Definitions
         selectedGallery.Definitions.forEach(definition => {
           console.log("found a def",definition)
-            const option = document.createElement('option');
-            option.text = definition;
-            option.value = definition;
-            definitionSelect.add(option);
+          const option = document.createElement('option');
+          option.text = definition;
+          option.value = definition;
+          definitionSelect.add(option);
         });
     });
   
