@@ -244,7 +244,7 @@
     //Does this need to be in a function??
     azresources = await this.getJSONazresources(useraccess);
     console.log(JSON.stringify(azresources)); //check the object has come down
-  }
+
   // Populate the select element for Subscriptions
   azresources.Subscriptions.forEach(subscription => {
     const option = document.createElement('option');
@@ -299,6 +299,8 @@
   
   // Trigger the change event to populate the Galleries, Definitions, and VMs select elements initially
   subscriptionSelect.dispatchEvent(new Event('change'));
+  }
+  
   //new stuff
 </script>
   
