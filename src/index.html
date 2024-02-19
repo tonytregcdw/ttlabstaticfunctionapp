@@ -50,12 +50,12 @@
       let Selection = {
         //code : 'mJlmaDJRGgvURTHOzZV1N3Iboi25_wdiUiKkT7w_UhqZAzFutYUHUQ==',
         code : 'blahblahblah',
-        Subscription : azresources.SubscriptionId[subscriptionSelect.value].Name,
-        VMName : azresources.VMs[vmSelect.value].Name,
-        VMResourceGroupName : azresources.VMs[vmSelect.value].ResourceGroup,
-        GalleryName : azresources.Galleries[gallerySelect.value].Name,
-        GalleryResourceGroup : azresources.Galleries[gallerySelect.value].ResourceGroup,
-        DefinitionName : azresources.Galleries[gallerySelect.value].Definitions[definitionSelect.value].Name
+        Subscription : azresources.Subscriptions[subscriptionSelect.value].SubscriptionId,
+        VMName : azresources.Subscriptions[subscriptionSelect.value].VMs[vmSelect.value].Name,
+        VMResourceGroupName : azresources.Subscriptions[subscriptionSelect.value].VMs[vmSelect.value].ResourceGroup,
+        GalleryName : azresources.Subscriptions[subscriptionSelect.value].Galleries[gallerySelect.value].Name,
+        GalleryResourceGroup : azresources.Subscriptions[subscriptionSelect.value].Galleries[gallerySelect.value].ResourceGroup,
+        DefinitionName : azresources.Subscriptions[subscriptionSelect.value].Galleries[gallerySelect.value].Definitions[definitionSelect.value].Name
       };  
       
       let queryString = objectToQueryString(Selection);
@@ -262,7 +262,8 @@
     vmSelect.innerText = null;
   
     // Get the selected Subscription
-    const selectedSubscription = azresources.Subscriptions.find(subscription => subscription.SubscriptionId === subscriptionSelect.value);
+    // const selectedSubscription = azresources.Subscriptions.find(subscription => subscription.SubscriptionId === subscriptionSelect.value);
+    const selectedSubscription = azresources.Subscriptions[subscriptionSelect.value];
   
     // Populate the select element for Galleries
     selectedSubscription.Galleries.forEach((gallery, index) => {
@@ -290,8 +291,9 @@
         definitionSelect.innerText = null;
   
         // Get the selected Gallery
-        const selectedGallery = selectedSubscription.Galleries.find(gallery => gallery.Name === gallerySelect.value);
-  
+        // const selectedGallery = selectedSubscription.Galleries.find(gallery => gallery.Name === gallerySelect.value);
+        const selectedGallery = selectedSubscription.Galleries[gallerySelect.value];
+
         // Populate the select element for Definitions
         selectedGallery.Definitions.forEach((definition, index) => {
           console.log("found a def:",definition)
