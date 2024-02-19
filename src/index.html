@@ -56,7 +56,6 @@
         GalleryName : azresources.Galleries[Galleryselect.value].Name,
         GalleryResourceGroup : azresources.Galleries[Galleryselect.value].ResourceGroup,
         DefinitionName : azresources.Galleries[Galleryselect.value].Definitions[Definitionselect.value].Name
-        
       };  
       
       let queryString = objectToQueryString(Selection);
@@ -248,10 +247,10 @@
     console.log(JSON.stringify(azresources)); //check the object has come down
 
   // Populate the select element for Subscriptions
-  azresources.Subscriptions.forEach(subscription => {
+  azresources.Subscriptions.forEach((subscription, index) => {
     const option = document.createElement('option');
     option.text = subscription.SubscriptionId;
-    option.value = subscription.SubscriptionId;
+    option.value = index;
     subscriptionSelect.add(option);
   });
   
@@ -266,10 +265,10 @@
     const selectedSubscription = azresources.Subscriptions.find(subscription => subscription.SubscriptionId === subscriptionSelect.value);
   
     // Populate the select element for Galleries
-    selectedSubscription.Galleries.forEach(gallery => {
+    selectedSubscription.Galleries.forEach((gallery, index) => {
         const option = document.createElement('option');
         option.text = gallery.Name;
-        option.value = gallery.Name;
+        option.value = index;
         gallerySelect.add(option);
 
         // put this into a function as repeated further down...
@@ -280,7 +279,6 @@
           console.log("value1:",definition["Name"])
           const option = document.createElement('option');
           option.text = definition["Name"];
-          // azresources.Galleries[Gallerydata].Definitions[i].Name;
           option.value = index;
           definitionSelect.add(option);
         });
@@ -295,20 +293,20 @@
         const selectedGallery = selectedSubscription.Galleries.find(gallery => gallery.Name === gallerySelect.value);
   
         // Populate the select element for Definitions
-        selectedGallery.Definitions.forEach(definition => {
-          console.log("found a def",definition)
+        selectedGallery.Definitions.forEach((definition, index) => {
+          console.log("found a def:",definition)
           const option = document.createElement('option');
           option.text = definition.Name;
-          option.value = definition.Name;
+          option.value = index;
           definitionSelect.add(option);
         });
     });
   
     // Populate the select element for VMs
-    selectedSubscription.VMs.forEach(vm => {
+    selectedSubscription.VMs.forEach((vm, index) => {
         const option = document.createElement('option');
         option.text = vm.Name;
-        option.value = vm.Name;
+        option.value = index;
         vmSelect.add(option);
     });
   });
