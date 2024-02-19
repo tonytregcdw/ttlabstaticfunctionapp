@@ -50,12 +50,12 @@
       let Selection = {
         //code : 'mJlmaDJRGgvURTHOzZV1N3Iboi25_wdiUiKkT7w_UhqZAzFutYUHUQ==',
         code : 'blahblahblah',
-        Subscription : azresources.SubscriptionId[Subselect.value].Name,
-        VMName : azresources.VMs[VMselect.value].Name,
-        VMResourceGroupName : azresources.VMs[VMselect.value].ResourceGroup,
-        GalleryName : azresources.Galleries[Galleryselect.value].Name,
-        GalleryResourceGroup : azresources.Galleries[Galleryselect.value].ResourceGroup,
-        DefinitionName : azresources.Galleries[Galleryselect.value].Definitions[Definitionselect.value].Name
+        Subscription : azresources.SubscriptionId[subscriptionSelect.value].Name,
+        VMName : azresources.VMs[vmSelect.value].Name,
+        VMResourceGroupName : azresources.VMs[vmSelect.value].ResourceGroup,
+        GalleryName : azresources.Galleries[gallerySelect.value].Name,
+        GalleryResourceGroup : azresources.Galleries[gallerySelect.value].ResourceGroup,
+        DefinitionName : azresources.Galleries[gallerySelect.value].Definitions[definitionSelect.value].Name
       };  
       
       let queryString = objectToQueryString(Selection);
