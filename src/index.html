@@ -274,15 +274,18 @@
 
         // put this into a function as repeated further down...
         // Populate the select element for Definitions
-        gallery.Definitions.forEach(definition => {
+        gallery.Definitions.forEach((definition, index) => {
           console.log("found a def",definition)
+          console.log("index:",index)
+          console.log("value:",definition.Name)
           const option = document.createElement('option');
-          option.text = definition;
-          option.value = definition;
+          option.text = definition.Name;
+          // azresources.Galleries[Gallerydata].Definitions[i].Name;
+          option.value = index;
           definitionSelect.add(option);
         });
     });
-  
+    
     // Update the Definitions select element when the Gallery changes
     gallerySelect.addEventListener('change', () => {
         // Clear the Definitions select element
