@@ -76,7 +76,8 @@
         })
           .then(response => response.json())
           .then(data => {
-            console.log(data.statusQueryGetUri);
+            console.log("Durable instance URIs:", data);
+            console.log("Query URI:", data.statusQueryGetUri);
             var statusUrl = encodeURIComponent(data.statusQueryGetUri);
             const statusfunction = '/api/FunctionStatus?code=blahblahblah&statusuri=' + statusUrl;
             let jobfinished = null;
