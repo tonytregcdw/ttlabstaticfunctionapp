@@ -81,12 +81,16 @@
             var statusUrl = encodeURIComponent(data.statusQueryGetUri);
             const statusfunction = '/api/FunctionStatus?code=blahblahblah&statusuri=' + statusUrl;
             let jobfinished = null;
+            let previousStatus = "";
             const timer = setInterval(() => {
               fetch(statusfunction)
                 .then(response => response.json())
                 .then(data => {
                   console.log('customstatus:', data.customStatus)
-                  statusDisplay.textContent = data.customStatus
+                  if (data.customStatus !== previousStatus) {
+                    statusDisplay.textContent += data.customStatus + "\n";
+                    previousStatus = data.customStatus;
+                  }
                   if (data.output !== null) {
                       jobfinished = data.output;
                       console.log('jobfinished:', jobfinished);
