@@ -256,7 +256,7 @@
   // Populate the select element for Subscriptions
   azresources.Subscriptions.forEach((subscription, index) => {
     const option = document.createElement('option');
-    option.text = subscription.SubscriptionId;
+    option.text = subscription.SubscriptionName;
     option.value = index;
     subscriptionSelect.add(option);
   });
