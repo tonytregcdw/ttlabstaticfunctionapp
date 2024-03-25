@@ -96,7 +96,7 @@
                   if (data.output !== null) {
                       jobfinished = data.output;
                       console.log('jobfinished:', jobfinished);
-                      document.getElementById('output').textContent = JSON.stringify(jobfinished);
+                      //document.getElementById('output').textContent = JSON.stringify(jobfinished);
                       clearInterval(timer);
                     } else {
                       seconds++;
@@ -150,7 +150,7 @@
       //   AccountId : ''
       // };
 
-      myMSALObj.loginPopup()
+      myMSALObj.loginRedirect()
         .then((response) => {
           console.log("User signed in:", response);
           // Now you have an authenticated account object
@@ -326,7 +326,7 @@
   
   //new stuff
 </script>
-  
+
 
 <script>
 //     const Subselect = document.getElementById("Subselector");
