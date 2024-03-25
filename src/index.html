@@ -150,7 +150,7 @@
       //   AccountId : ''
       // };
 
-      myMSALObj.loginRedirect()
+      myMSALObj.loginPopup()
         .then((response) => {
           console.log("User signed in:", response);
           // Now you have an authenticated account object
