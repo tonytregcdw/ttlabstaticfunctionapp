@@ -201,8 +201,10 @@
   //     console.log("performing resource lookup using token:", useraccess);
   //     callerazresources(useraccess);
   //   });
-  var tttoken = getAccessToken();
-  console.log('tttoken', tttoken)
+  getAccessToken((tttoken) => {
+    console.log("tttoken inside function whatever:", tttoken);
+  });
+  console.log('tttoken outside', tttoken)
   callerazresources(tttoken);
 
   async function getJSONazresources(useraccess) {
