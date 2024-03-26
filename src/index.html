@@ -196,8 +196,11 @@
   var azresources = JSON.parse(sessionStorage.getItem("azresources"));
 
   console.log('azresource is: '+JSON.stringify(azresources));
-  
-  callerazresources();
+
+  getAccessToken((useraccess) => {
+      console.log("performing resource lookup using token:", useraccess);
+      callerazresources(useraccess);
+    });
 
   async function getJSONazresources(useraccess) {
     console.log('POSTing:', useraccess)
@@ -225,13 +228,10 @@
     callerazresources()
   }
 
-  async function callerazresources() {
+  async function callerazresources(useraccess) {
     if (azresources === null) {
-      getAccessToken((useraccess) => {
-        console.log("performing resource lookup using token:", useraccess);
-        azresources = getJSONazresources(useraccess);
-        sessionStorage.setItem("azresources", JSON.stringify(azresources));
-      });
+      azresources = await this.getJSONazresources(useraccess);
+      sessionStorage.setItem("azresources", JSON.stringify(azresources));
     }
     console.log('azresource is: '+JSON.stringify(azresources));
 
