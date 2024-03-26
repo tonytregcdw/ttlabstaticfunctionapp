@@ -223,7 +223,7 @@
       azresources = await this.getJSONazresources(useraccess);
       sessionStorage.setItem("azresources", azresources);
     }
-    console.log(JSON.stringify(azresources)); //check the object has come down
+    console.log('azresource is: '+JSON.stringify(azresources)); //check the object has come down
 
     // Populate the select element for Subscriptions
     azresources.Subscriptions.forEach((subscription, index) => {
