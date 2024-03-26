@@ -189,6 +189,7 @@
   //     // Initialize the variable if it does not exist
   //     azresources = {};
   // }
+  console.log('azresource is: '+JSON.stringify(azresources));
   
   getAccessToken((useraccess) => {
         console.log("performing lookup using token:", useraccess);
@@ -219,11 +220,10 @@
   async function callerazresources(useraccess) {
     //Does this need to be in a function??
     if (azresources === null) {
-      // Initialize the variable if it does not exist
       azresources = await this.getJSONazresources(useraccess);
       sessionStorage.setItem("azresources", azresources);
     }
-    console.log('azresource is: '+JSON.stringify(azresources)); //check the object has come down
+    console.log('azresource is: '+JSON.stringify(azresources));
 
     // Populate the select element for Subscriptions
     azresources.Subscriptions.forEach((subscription, index) => {
