@@ -13,7 +13,7 @@
 
 <body>
   <div class="wrapper">
-    <button onclick="getJSONazresources(useraccess)">Lookup Gold VM</button>
+    <button onclick="updateresources()">Lookup Gold VM</button>
     <form id="apiForm">
       <label for="input">Select Subscription, Master VM, Gallery and Definition:</label><br>
       <div id="Subscriptions"><p>Subscriptions</p>
@@ -216,7 +216,12 @@
           console.log('error: ' + err);
       });
     }
-    
+  
+  async function updateresources() {
+    azresources = null;
+    callerazresources(useraccess)
+  }
+
   async function callerazresources(useraccess) {
     //Does this need to be in a function??
     if (azresources === null) {
