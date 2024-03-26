@@ -189,7 +189,7 @@
   //     // Initialize the variable if it does not exist
   //     azresources = {};
   // }
-  console.log('azresource is: '+JSON.stringify(azresources));
+  console.log('azresource is: '+JSON.parse(azresources));
   
   getAccessToken((useraccess) => {
         console.log("performing lookup using token:", useraccess);
@@ -221,7 +221,7 @@
     //Does this need to be in a function??
     if (azresources === null) {
       azresources = await this.getJSONazresources(useraccess);
-      sessionStorage.setItem("azresources", azresources);
+      sessionStorage.setItem("azresources", JSON.stringify(azresources));
     }
     console.log('azresource is: '+JSON.stringify(azresources));
 
