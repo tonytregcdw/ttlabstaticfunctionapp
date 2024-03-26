@@ -64,7 +64,6 @@
       const timerDisplay = document.getElementById('timerDisplay');
       const statusDisplay = document.getElementById('statusDisplay');
       console.log(queryString);
-      //let useraccess = getAccessToken();
       
       getAccessToken((useraccess) => {
         console.log("starting job using token:", useraccess);
@@ -143,6 +142,16 @@
 
       const myMSALObj = new msal.PublicClientApplication(msalConfig);
 
+      //compare timestamp or expiry and popup only if expired.
+      const currentTime = Math.round(new Date().getTime() / 1000); // Current time in Unix timestamp format
+      if (currentTime > timestamp) {
+          console.log("The current time is after the timestamp.");
+      } else if (currentTime < timestamp) {
+          console.log("The current time is before the timestamp.");
+      } else {
+          console.log("The current time is equal to the timestamp.");
+      }
+
       myMSALObj.loginPopup()
         .then((response) => {
           console.log("User signed in:", response);
@@ -185,16 +194,10 @@
   const definitionSelect = document.getElementById('Definitionselector');
   const vmSelect = document.getElementById('VMselector');
   var azresources = JSON.parse(sessionStorage.getItem("azresources"));
-  // if (azresources === null) {
-  //     // Initialize the variable if it does not exist
-  //     azresources = {};
-  // }
+
   console.log('azresource is: '+JSON.stringify(azresources));
   
-  getAccessToken((useraccess) => {
-        console.log("performing lookup using token:", useraccess);
-        callerazresources(useraccess);
-    });
+  callerazresources();
 
   async function getJSONazresources(useraccess) {
     console.log('POSTing:', useraccess)
@@ -219,14 +222,16 @@
   
   async function updateresources() {
     azresources = null;
-    callerazresources(useraccess)
+    callerazresources()
   }
 
-  async function callerazresources(useraccess) {
-    //Does this need to be in a function??
+  async function callerazresources() {
     if (azresources === null) {
-      azresources = await this.getJSONazresources(useraccess);
-      sessionStorage.setItem("azresources", JSON.stringify(azresources));
+      getAccessToken((useraccess) => {
+        console.log("performing resource lookup using token:", useraccess);
+        azresources = getJSONazresources(useraccess);
+        sessionStorage.setItem("azresources", JSON.stringify(azresources));
+      });
     }
     console.log('azresource is: '+JSON.stringify(azresources));
 
