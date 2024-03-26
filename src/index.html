@@ -184,12 +184,12 @@
   const gallerySelect = document.getElementById('Galleryselector');
   const definitionSelect = document.getElementById('Definitionselector');
   const vmSelect = document.getElementById('VMselector');
-  var azresources = sessionStorage.getItem("azresources");
+  var azresources = JSON.parse(sessionStorage.getItem("azresources"));
   // if (azresources === null) {
   //     // Initialize the variable if it does not exist
   //     azresources = {};
   // }
-  console.log('azresource is: '+JSON.parse(azresources));
+  console.log('azresource is: '+JSON.stringify(azresources));
   
   getAccessToken((useraccess) => {
         console.log("performing lookup using token:", useraccess);
