@@ -70,7 +70,7 @@ function getAccessToken(callback) {
         scopes: ["User.ReadWrite"],
     };
 
-    const myMsal = new PublicClientApplication(config);
+    const myMsal = new msal.PublicClientApplication(config);
 
     myMsal.handleRedirectPromise().then(response => {
         let accountId = "";
