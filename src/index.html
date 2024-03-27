@@ -39,77 +39,6 @@
   </main>
 
   <script>
-    function objectToQueryString(obj) {
-    return Object.keys(obj)
-        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]))
-        .join('&');
-    }
-
-    document.getElementById('apiForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      let Selection = {
-        //code : 'mJlmaDJRGgvURTHOzZV1N3Iboi25_wdiUiKkT7w_UhqZAzFutYUHUQ==',
-        code : 'blahblahblah',
-        Subscription : azresources.Subscriptions[subscriptionSelect.value].SubscriptionId,
-        VMName : azresources.Subscriptions[subscriptionSelect.value].VMs[vmSelect.value].Name,
-        VMResourceGroupName : azresources.Subscriptions[subscriptionSelect.value].VMs[vmSelect.value].ResourceGroup,
-        GalleryName : azresources.Subscriptions[subscriptionSelect.value].Galleries[gallerySelect.value].Name,
-        GalleryResourceGroup : azresources.Subscriptions[subscriptionSelect.value].Galleries[gallerySelect.value].ResourceGroup,
-        DefinitionName : azresources.Subscriptions[subscriptionSelect.value].Galleries[gallerySelect.value].Definitions[definitionSelect.value].Name
-      };  
-      
-      let queryString = objectToQueryString(Selection);
-      let seconds = 0;
-      const timerDisplay = document.getElementById('timerDisplay');
-      const statusDisplay = document.getElementById('statusDisplay');
-      console.log(queryString);
-      
-      getAccessToken((useraccess) => {
-        console.log("starting job using token:", useraccess);
-        fetch('/api/orchestrators/imageorchestrator?' + queryString, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ useraccess }),
-        })
-          .then(response => response.json())
-          .then(data => {
-            console.log("Durable instance URIs:", data);
-            console.log("Query URI:", data.statusQueryGetUri);
-            var statusUrl = encodeURIComponent(data.statusQueryGetUri);
-            const statusfunction = '/api/FunctionStatus?code=blahblahblah&statusuri=' + statusUrl;
-            let jobfinished = null;
-            let previousStatus = "";
-            const timer = setInterval(() => {
-              fetch(statusfunction)
-                .then(response => response.json())
-                .then(data => {
-                  console.log('customstatus:', data.customStatus)
-                  if (data.customStatus !== previousStatus) {
-                    statusDisplay.textContent += "<p>" + data.customStatus + "</p>";
-                    previousStatus = data.customStatus;
-                  }
-                  if (data.output !== null) {
-                      jobfinished = data.output;
-                      console.log('jobfinished:', jobfinished);
-                      document.getElementById('output').textContent = JSON.stringify(jobfinished);
-                      clearInterval(timer);
-                    } else {
-                      seconds++;
-                      timerDisplay.textContent = 'Timer: ' + seconds;
-                    }
-                })
-              .catch(error => console.error('Error:', error));
-            }, 10000); // Fetch every 1000 milliseconds (1 second)
-          })
-        .catch(error => console.error('Error:', error));
-      });
-    });
-    </script>
-
-  <script>
     async function getUserInfo() {
       const response = await fetch('/.auth/me');
       const payload = await response.json();
@@ -187,25 +116,8 @@
     };
 </script>
 
+
 <script>
-  // Get the select elements
-  const subscriptionSelect = document.getElementById('Subselector');
-  const gallerySelect = document.getElementById('Galleryselector');
-  const definitionSelect = document.getElementById('Definitionselector');
-  const vmSelect = document.getElementById('VMselector');
-  var azresources = JSON.parse(sessionStorage.getItem("azresources"));
-
-  console.log('azresource is: '+JSON.stringify(azresources));
-
-  // getAccessToken((useraccess) => {
-  //     console.log("performing resource lookup using token:", useraccess);
-  //     callerazresources(useraccess);
-  //   });
-  getAccessToken((tttoken) => {
-    console.log("tttoken inside function whatever:", tttoken);
-  });
-  console.log('tttoken outside', tttoken)
-  callerazresources(tttoken);
 
   async function getJSONazresources(useraccess) {
     console.log('POSTing:', useraccess)
@@ -228,11 +140,6 @@
       });
     }
   
-  async function updateresources() {
-    azresources = null;
-    callerazresources(tttoken)
-  }
-
   async function callerazresources(useraccess) {
     //
     if (azresources === null) {
@@ -308,7 +215,108 @@
     // Trigger the change event to populate the Galleries, Definitions, and VMs select elements initially
     subscriptionSelect.dispatchEvent(new Event('change'));
   }
+
+  async function updateresources() {
+    azresources = null;
+    getAccessToken((useraccesstoken) => {
+      console.log("useraccesstoken inside function whatever:", useraccesstoken);
+      callerazresources(useraccesstoken);
+    });
+  }
+
+  // Get the select elements
+  const subscriptionSelect = document.getElementById('Subselector');
+  const gallerySelect = document.getElementById('Galleryselector');
+  const definitionSelect = document.getElementById('Definitionselector');
+  const vmSelect = document.getElementById('VMselector');
+  var azresources = JSON.parse(sessionStorage.getItem("azresources"));
+
+  console.log('azresource is: '+JSON.stringify(azresources));
+
+  // getAccessToken((useraccess) => {
+  //     console.log("performing resource lookup using token:", useraccess);
+  //     callerazresources(useraccess);
+  //   });
+  getAccessToken((useraccesstoken) => {
+    console.log("useraccesstoken inside function whatever:", useraccesstoken);
+    callerazresources(useraccesstoken);
+  });
+  
+  //goal - ensure useraccesstoken is available at the start, for any proceeding functions.
+  //have a date check in useraccesstoken to fetch a new one if it expires.
+
 </script>
+
+<script>
+  function objectToQueryString(obj) {
+  return Object.keys(obj)
+      .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]))
+      .join('&');
+  }
+
+  document.getElementById('apiForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    let Selection = {
+      //code : 'mJlmaDJRGgvURTHOzZV1N3Iboi25_wdiUiKkT7w_UhqZAzFutYUHUQ==',
+      code : 'blahblahblah',
+      Subscription : azresources.Subscriptions[subscriptionSelect.value].SubscriptionId,
+      VMName : azresources.Subscriptions[subscriptionSelect.value].VMs[vmSelect.value].Name,
+      VMResourceGroupName : azresources.Subscriptions[subscriptionSelect.value].VMs[vmSelect.value].ResourceGroup,
+      GalleryName : azresources.Subscriptions[subscriptionSelect.value].Galleries[gallerySelect.value].Name,
+      GalleryResourceGroup : azresources.Subscriptions[subscriptionSelect.value].Galleries[gallerySelect.value].ResourceGroup,
+      DefinitionName : azresources.Subscriptions[subscriptionSelect.value].Galleries[gallerySelect.value].Definitions[definitionSelect.value].Name
+    };  
+    
+    let queryString = objectToQueryString(Selection);
+    let seconds = 0;
+    const timerDisplay = document.getElementById('timerDisplay');
+    const statusDisplay = document.getElementById('statusDisplay');
+    console.log(queryString);
+    
+    getAccessToken((useraccesstoken) => {
+      console.log("starting job using token:", useraccesstoken);
+      fetch('/api/orchestrators/imageorchestrator?' + queryString, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ useraccesstoken }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log("Durable instance URIs:", data);
+          console.log("Query URI:", data.statusQueryGetUri);
+          var statusUrl = encodeURIComponent(data.statusQueryGetUri);
+          const statusfunction = '/api/FunctionStatus?code=blahblahblah&statusuri=' + statusUrl;
+          let jobfinished = null;
+          let previousStatus = "";
+          const timer = setInterval(() => {
+            fetch(statusfunction)
+              .then(response => response.json())
+              .then(data => {
+                console.log('customstatus:', data.customStatus)
+                if (data.customStatus !== previousStatus) {
+                  statusDisplay.textContent += "<p>" + data.customStatus + "</p>";
+                  previousStatus = data.customStatus;
+                }
+                if (data.output !== null) {
+                    jobfinished = data.output;
+                    console.log('jobfinished:', jobfinished);
+                    document.getElementById('output').textContent = JSON.stringify(jobfinished);
+                    clearInterval(timer);
+                  } else {
+                    seconds++;
+                    timerDisplay.textContent = 'Timer: ' + seconds;
+                  }
+              })
+            .catch(error => console.error('Error:', error));
+          }, 10000); // Fetch every 1000 milliseconds (1 second)
+        })
+      .catch(error => console.error('Error:', error));
+    });
+  });
+  </script>
 
 </body>
 
