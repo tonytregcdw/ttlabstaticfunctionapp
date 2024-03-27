@@ -95,7 +95,7 @@ function getAccessToken(callback) {
                 console.log('accountId for existing session',accountId);
                 const accessTokenRequest = {
                     scopes: ["https://management.azure.com/user_impersonation"],
-                    account: currentAccounts,
+                    account: accountId,
                 };
                 myMsal.acquireTokenSilent(accessTokenRequest).then(accessTokenResponse => {
                     console.log('tokenresponse is:', accessTokenResponse);
