@@ -56,8 +56,8 @@
   <script>
 
 
-
 function getAccessToken(callback) {
+    console.log('attempting to retrieve access token');
     const config = {
         auth: {
             clientId: "0f790682-c2d8-46d0-a22d-e5760fc93ff3",
@@ -74,6 +74,7 @@ function getAccessToken(callback) {
 
     myMsal.handleRedirectPromise().then(response => {
         let accountId = "";
+        console.log('response is:', response);
         if (response !== null) {
             accountId = response.account.homeAccountId;
             // Handle signed-in user content, call API, etc.
@@ -86,6 +87,7 @@ function getAccessToken(callback) {
             console.log("calling back token:", useraccess);
             callback(useraccess);
         } else {
+            console.log('entering the token-only method, as response is null');
             const currentAccounts = myMsal.getAllAccounts();
             if (currentAccounts.length === 1) {
                 accountId = currentAccounts.homeAccountId;
@@ -94,6 +96,7 @@ function getAccessToken(callback) {
                     account: currentAccounts,
                 };
                 myMsal.acquireTokenSilent(accessTokenRequest).then(accessTokenResponse => {
+                    console.log('tokenresponse is:', accessTokenResponse);
                     let accessToken = accessTokenResponse.accessToken;
                     let useraccess = {
                         accessToken: accessToken,
