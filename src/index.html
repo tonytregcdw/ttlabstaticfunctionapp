@@ -67,7 +67,7 @@ function getAccessToken(callback) {
     };
 
     const loginRequest = {
-        scopes: ["User.ReadWrite"],
+        scopes: ["https://management.azure.com/user_impersonation"],
     };
 
     const myMsal = new msal.PublicClientApplication(config);
