@@ -90,6 +90,7 @@ function getAccessToken(callback) {
             console.log('entering the token-only method, as response is null');
             const currentAccounts = myMsal.getAllAccounts();
             if (currentAccounts.length === 1) {
+              console.log('foundaccount:', currentAccounts);
                 accountId = currentAccounts.homeAccountId;
                 const accessTokenRequest = {
                     scopes: ["https://management.azure.com/user_impersonation"],
