@@ -292,9 +292,9 @@ function getAccessToken(callback) {
 
   async function updateresources() {
     azresources = null;
-    getAccessToken((useraccesstoken) => {
-      console.log("useraccesstoken inside function whatever:", useraccesstoken);
-      callerazresources(useraccesstoken);
+    getAccessToken((useraccess) => {
+      console.log("useraccess inside function whatever:", useraccess);
+      callerazresources(useraccess);
     });
   }
 
@@ -311,13 +311,13 @@ function getAccessToken(callback) {
   //     console.log("performing resource lookup using token:", useraccess);
   //     callerazresources(useraccess);
   //   });
-  getAccessToken((useraccesstoken) => {
-    console.log("useraccesstoken inside function whatever:", useraccesstoken);
-    callerazresources(useraccesstoken);
+  getAccessToken((useraccess) => {
+    console.log("useraccess inside function whatever:", useraccess);
+    callerazresources(useraccess);
   });
   
-  //goal - ensure useraccesstoken is available at the start, for any proceeding functions.
-  //have a date check in useraccesstoken to fetch a new one if it expires.
+  //goal - ensure useraccess is available at the start, for any proceeding functions.
+  //have a date check in useraccess to fetch a new one if it expires.
 
 </script>
 
@@ -348,14 +348,14 @@ function getAccessToken(callback) {
     const statusDisplay = document.getElementById('statusDisplay');
     console.log(queryString);
     
-    getAccessToken((useraccesstoken) => {
-      console.log("starting job using token:", useraccesstoken);
+    getAccessToken((useraccess) => {
+      console.log("starting job using token:", useraccess);
       fetch('/api/orchestrators/imageorchestrator?' + queryString, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ useraccesstoken }),
+      body: JSON.stringify({ useraccess }),
       })
         .then(response => response.json())
         .then(data => {
