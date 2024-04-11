@@ -314,7 +314,7 @@ function getAccessToken(callback) {
               .then(data => {
                 console.log('customstatus:', data.customStatus)
                 if (data.customStatus !== previousStatus) {
-                  statusDisplay.textContent += "<li>" + data.customStatus + "</li>";
+                  statusDisplay.innerHTML += "<li>" + data.customStatus + "</li>";
                   previousStatus = data.customStatus;
                 }
                 if (data.output !== null) {
