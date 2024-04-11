@@ -226,6 +226,7 @@ function getAccessToken(callback) {
     
     // Trigger the change event to populate the Galleries, Definitions, and VMs select elements initially
     subscriptionSelect.dispatchEvent(new Event('change'));
+    updatestatus.textContent = 'ready';
   }
 
   async function updateresources() {
@@ -237,9 +238,7 @@ function getAccessToken(callback) {
     updatestatus.textContent = 'updating';
     getAccessToken((useraccess) => {
       console.log("useraccess inside function whatever:", useraccess);
-      callerazresources((useraccess) => {
-        updatestatus.textContent = 'updated';
-      });
+      callerazresources(useraccess);
     });
   }
 
