@@ -14,6 +14,7 @@
 <body>
   <div class="wrapper">
     <button onclick="updateresources()">Lookup Gold VM</button>
+    <p id="updatestatus"></p>
     <form id="apiForm">
       <label for="input">Select Subscription, Master VM, Gallery and Definition:</label><br>
       <div id="Subscriptions"><p>Subscriptions</p>
@@ -124,69 +125,6 @@ function getAccessToken(callback) {
         console.log(error);
     });
 }
-
-
-
-    // function getAccessToken(callback) {
-    //   //check if exists and hasnt expireed
-    //   const msalConfig = {
-    //     auth: {
-    //       clientId: "0f790682-c2d8-46d0-a22d-e5760fc93ff3",
-    //       authority: "https://login.microsoftonline.com/common",
-    //       // authority: "https://login.microsoftonline.com/6f5b157f-d392-4f88-8196-39c50f92b6c9",
-    //       redirectUri: "https://avdgoldimage.az.trickyjoe.com/", // Your redirect URI
-    //     },
-    //     cache: {
-    //       cacheLocation: "sessionStorage",
-    //       storeAuthStateInCookie: false,
-    //     },
-    //   };
-
-    //   const myMSALObj = new msal.PublicClientApplication(msalConfig);
-
-    //   //compare timestamp or expiry and popup only if expired.
-    //   // const currentTime = Math.round(new Date().getTime() / 1000); // Current time in Unix timestamp format
-    //   // if (currentTime > timestamp) {
-    //   //     console.log("The current time is after the timestamp.");
-    //   // } else if (currentTime < timestamp) {
-    //   //     console.log("The current time is before the timestamp.");
-    //   // } else {
-    //   //     console.log("The current time is equal to the timestamp.");
-    //   // }
-
-    //   myMSALObj.loginPopup()
-    //     .then((response) => {
-    //       console.log("User signed in:", response);
-    //       // Now you have an authenticated account object
-    //       // Proceed to acquire tokens
-    //       console.log('account is:', response.account);
-    //       const request = {
-    //         scopes: ["https://management.azure.com/user_impersonation"],
-    //         account: response.account,
-    //       };
-    //       //acquire the accesstoken
-    //       myMSALObj.acquireTokenSilent(request)
-    //         .then((response) => {
-    //           console.log("Access token:", response.accessToken);
-    //           accessToken = response.accessToken;
-    //           console.log("returned accessToken is:", accessToken)
-    //           useraccess = {
-    //             accessToken : accessToken,
-    //             tenantId : response.account.tenantId,
-    //             AccountId : response.account.username
-    //           };
-    //           //this needs fixing to return to the base function.
-    //           console.log("calling back token:", useraccess)
-    //           callback(useraccess);
-    //         })
-    //         .catch((error) => {
-    //           console.error("Error acquiring token:", error);
-    //         });
-    //     })
-    //     .catch((error) => {
-    //       console.error("Error signing in:", error);
-    //     });
-    // };
     
 </script>
 
@@ -292,10 +230,16 @@ function getAccessToken(callback) {
 
   async function updateresources() {
     azresources = null;
+    subscriptionSelect.innerText = null;
+    gallerySelect.innerText = null;
+    definitionSelect.innerText = null;
+    vmSelect.innerText = null;
+    updatestatus.textContent = 'updating';
     getAccessToken((useraccess) => {
       console.log("useraccess inside function whatever:", useraccess);
       callerazresources(useraccess);
     });
+    updatestatus.textContent = 'updated';
   }
 
   // Get the select elements
@@ -307,10 +251,6 @@ function getAccessToken(callback) {
 
   console.log('azresource is: '+JSON.stringify(azresources));
 
-  // getAccessToken((useraccess) => {
-  //     console.log("performing resource lookup using token:", useraccess);
-  //     callerazresources(useraccess);
-  //   });
   getAccessToken((useraccess) => {
     console.log("useraccess inside function whatever:", useraccess);
     callerazresources(useraccess);
@@ -346,7 +286,9 @@ function getAccessToken(callback) {
     let seconds = 0;
     const timerDisplay = document.getElementById('timerDisplay');
     const statusDisplay = document.getElementById('statusDisplay');
+    const updatestatus = document.getElementById('updatestatus');
     statusDisplay.innerHTML = '';
+    updatestatus.innerHTML = '';
     console.log(queryString);
     
     getAccessToken((useraccess) => {
