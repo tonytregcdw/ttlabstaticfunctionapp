@@ -30,7 +30,7 @@
       </div>
       <input type="submit" value="Submit">
       <p id="timerDisplay">Timer: 0</p>
-      <p id="statusDisplay"></p>
+      <ul id="statusDisplay"></ul>
     </form>
   </div>
 
@@ -346,6 +346,7 @@ function getAccessToken(callback) {
     let seconds = 0;
     const timerDisplay = document.getElementById('timerDisplay');
     const statusDisplay = document.getElementById('statusDisplay');
+    statusDisplay.innerHTML = '';
     console.log(queryString);
     
     getAccessToken((useraccess) => {
@@ -371,7 +372,7 @@ function getAccessToken(callback) {
               .then(data => {
                 console.log('customstatus:', data.customStatus)
                 if (data.customStatus !== previousStatus) {
-                  statusDisplay.textContent += "<p>" + data.customStatus + "</p>";
+                  statusDisplay.textContent += "<li>" + data.customStatus + "</li>";
                   previousStatus = data.customStatus;
                 }
                 if (data.output !== null) {
