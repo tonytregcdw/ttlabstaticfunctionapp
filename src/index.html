@@ -237,9 +237,10 @@ function getAccessToken(callback) {
     updatestatus.textContent = 'updating';
     getAccessToken((useraccess) => {
       console.log("useraccess inside function whatever:", useraccess);
-      callerazresources(useraccess);
+      callerazresources((useraccess) => {
+        updatestatus.textContent = 'updated';
+      });
     });
-    updatestatus.textContent = 'updated';
   }
 
   // Get the select elements
