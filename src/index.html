@@ -35,9 +35,6 @@
     </form>
   </div>
 
-  <main>
-    <p id="output"></p>
-  </main>
 
   <script>
     async function getUserInfo() {
@@ -141,16 +138,16 @@ function getAccessToken(callback) {
       },
       body: JSON.stringify({ useraccess }),
     })
-      .then(function (response) {
-          return response.json();
-      })
-      .then(function (data) {
-          return data;
-      })
-      .catch(function (err) {
-          console.log('error: ' + err);
-      });
-    }
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (data) {
+        return data;
+    })
+    .catch(function (err) {
+        console.log('error: ' + err);
+    });
+  }
   
   async function callerazresources(useraccess) {
     //
@@ -247,8 +244,9 @@ function getAccessToken(callback) {
   const gallerySelect = document.getElementById('Galleryselector');
   const definitionSelect = document.getElementById('Definitionselector');
   const vmSelect = document.getElementById('VMselector');
+  const updatestatus = document.getElementById('updatestatus');
   var azresources = JSON.parse(sessionStorage.getItem("azresources"));
-
+  updatestatus.textContent = 'updating';
   console.log('azresource is: '+JSON.stringify(azresources));
 
   getAccessToken((useraccess) => {
@@ -286,7 +284,6 @@ function getAccessToken(callback) {
     let seconds = 0;
     const timerDisplay = document.getElementById('timerDisplay');
     const statusDisplay = document.getElementById('statusDisplay');
-    const updatestatus = document.getElementById('updatestatus');
     statusDisplay.innerHTML = '';
     updatestatus.innerHTML = '';
     console.log(queryString);
@@ -320,7 +317,7 @@ function getAccessToken(callback) {
                 if (data.output !== null) {
                     jobfinished = data.output;
                     console.log('jobfinished:', jobfinished);
-                    document.getElementById('output').textContent = JSON.stringify(jobfinished);
+                    //document.getElementById('output').textContent = JSON.stringify(jobfinished);
                     clearInterval(timer);
                   } else {
                     seconds++;
