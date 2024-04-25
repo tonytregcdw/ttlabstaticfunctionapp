@@ -224,6 +224,8 @@ function getAccessToken(callback) {
     // Trigger the change event to populate the Galleries, Definitions, and VMs select elements initially
     subscriptionSelect.dispatchEvent(new Event('change'));
     updatestatus.textContent = 'ready';
+    updatestatus.style.animation = 'none';
+    updatestatus.style.opacity = '1';
   }
 
   async function updateresources() {
@@ -233,6 +235,7 @@ function getAccessToken(callback) {
     definitionSelect.innerText = null;
     vmSelect.innerText = null;
     updatestatus.textContent = 'updating';
+    updatestatus.style.animation = 'blink 2s infinite';
     getAccessToken((useraccess) => {
       console.log("useraccess inside function whatever:", useraccess);
       callerazresources(useraccess);
@@ -247,6 +250,7 @@ function getAccessToken(callback) {
   const updatestatus = document.getElementById('updatestatus');
   var azresources = JSON.parse(sessionStorage.getItem("azresources"));
   updatestatus.textContent = 'updating';
+  updatestatus.style.animation = 'blink 2s infinite';
   console.log('azresource is: '+JSON.stringify(azresources));
 
   getAccessToken((useraccess) => {

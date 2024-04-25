@@ -64,3 +64,13 @@ textarea {
   background-color: #f8f8f8;
   resize: none;
 }
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+#animatedText {
+  animation: blink 2s infinite;
+}
