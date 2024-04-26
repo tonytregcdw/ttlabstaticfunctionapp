@@ -29,11 +29,22 @@ main > h1 {
 }
 
 .status { 
-  background-color: rgb(106, 106, 106);
+  background-color: rgb(188, 185, 185);
   width: 400px;
   border: 3px rgb(6, 25, 32);
   padding: 10px;
   margin: 10px;
+  display: inline-block;
+  text-align: center;
+  font-family: arial, sans-serif;
+}
+
+#column1 {
+  background-color: #a1edcc;
+}
+#column2 {
+  background-color: #a0e9ed;
+  width: 43%;
 }
 
 select {
