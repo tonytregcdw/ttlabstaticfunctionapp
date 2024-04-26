@@ -37,6 +37,8 @@ main > h1 {
   display: inline-block;
   text-align: center;
   font-family: arial, sans-serif;
+  display: table;
+  clear: both;
 }
 
 #column1 {
