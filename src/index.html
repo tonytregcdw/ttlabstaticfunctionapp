@@ -18,20 +18,20 @@
       <p id="updatestatus"></p>
     </div>
     <form id="apiForm">
-      <label for="input"><h2>Select Subscription, Master VM, Gallery and Definition::</h2></label><br>
-      <div id="Subscriptions"><p>Subscriptions</p>
+      <label for="input"><h2>Select:</h2></label><br>
+      <div id="Subscriptions"><p>Subscription:</p>
         <select id="Subselector"></select>
       </div>
-      <div id="VMs"><p>Gold VMs</p>
+      <div id="VMs"><p>Gold Master VM for imaging</p>
         <select id="VMselector"></select>
       </div>
-      <div id="Galleries"><p>Galleries</p>
+      <div id="Galleries"><p>Azure Compute Gallery</p>
         <select id="Galleryselector"></select>
       </div>
-      <div id="Definitions"><p>Definitions</p>
+      <div id="Definitions"><p>Image Definition:</p>
         <select id="Definitionselector"></select>
       </div>
-      <input type="submit" value="Submit">
+      <input id="imagesubmit" type="submit" value="Submit">
       <div class="status">
         <div class="column1">
           <p id="timerDisplay">Timer: 0</p>
@@ -280,7 +280,8 @@ function getAccessToken(callback) {
 
   document.getElementById('apiForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    
+    var submitButton = document.getElementById('imagesubmit');
+    submitButton.disabled = true;
     let Selection = {
       //code : 'mJlmaDJRGgvURTHOzZV1N3Iboi25_wdiUiKkT7w_UhqZAzFutYUHUQ==',
       code : 'blahblahblah',
@@ -331,6 +332,7 @@ function getAccessToken(callback) {
                     console.log('jobfinished:', jobfinished);
                     //document.getElementById('output').textContent = JSON.stringify(jobfinished);
                     clearInterval(timer);
+                    submitButton.disabled = false;
                   } else {
                     seconds++;
                     timerDisplay.textContent = 'Timer: ' + seconds;
