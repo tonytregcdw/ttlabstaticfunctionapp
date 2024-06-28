@@ -11,6 +11,10 @@
         "allowedRoles": ["authenticated"]
       },
       {
+        "route": "/vmlist/",
+        "allowedRoles": ["authenticated"]
+      },
+      {
         "route": "/admin/index.html",
         "allowedRoles": ["administrator"]
       },
