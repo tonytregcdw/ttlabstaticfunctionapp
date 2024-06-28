@@ -25,12 +25,6 @@
       <div id="VMs"><p>Gold Master VM for imaging</p>
         <select id="VMselector"></select>
       </div>
-      <div id="Galleries"><p>Azure Compute Gallery</p>
-        <select id="Galleryselector"></select>
-      </div>
-      <div id="Definitions"><p>Image Definition:</p>
-        <select id="Definitionselector"></select>
-      </div>
       <div class="status">
         <div class="column1">
           <p id="timerDisplay">Timer: 0</p>
@@ -172,53 +166,18 @@ function getAccessToken(callback) {
       subscriptionSelect.add(option);
     });
     
-    // Update the Galleries, Definitions, and VMs select elements when the Subscription changes
+    // Update the VMs select elements when the Subscription changes
     subscriptionSelect.addEventListener('change', () => {
-      // Clear the Galleries, Definitions, and VMs select elements
-      gallerySelect.innerText = null;
-      definitionSelect.innerText = null;
+      // Clear the VMs select elements
       vmSelect.innerText = null;
     
       // Get the selected Subscription
       // const selectedSubscription = azresources.Subscriptions.find(subscription => subscription.SubscriptionId === subscriptionSelect.value);
       const selectedSubscription = azresources.Subscriptions[subscriptionSelect.value];
     
-      // Populate the select element for Galleries
-      selectedSubscription.Galleries.forEach((gallery, index) => {
-        const option = document.createElement('option');
-        option.text = gallery.Name;
-        option.value = index;
-        gallerySelect.add(option);
 
-        // put this into a function as repeated further down...
-        // Populate the select element for Definitions
-        gallery.Definitions.forEach((definition, index) => {
-          console.log("found a def",definition)
-          console.log("index:",index)
-          console.log("value1:",definition["Name"])
-          const option = document.createElement('option');
-          option.text = definition["Name"];
-          option.value = index;
-          definitionSelect.add(option);
-        });
     });
     
-    // Update the Definitions select element when the Gallery changes
-    gallerySelect.addEventListener('change', () => {
-        // Clear the Definitions select element
-        definitionSelect.innerText = null;
-        // Get the selected Gallery
-        // const selectedGallery = selectedSubscription.Galleries.find(gallery => gallery.Name === gallerySelect.value);
-        const selectedGallery = selectedSubscription.Galleries[gallerySelect.value];
-        // Populate the select element for Definitions
-        selectedGallery.Definitions.forEach((definition, index) => {
-          console.log("found a def:",definition)
-          const option = document.createElement('option');
-          option.text = definition.Name;
-          option.value = index;
-          definitionSelect.add(option);
-        });
-    });
     // Populate the select element for VMs
     selectedSubscription.VMs.forEach((vm, index) => {
         const option = document.createElement('option');
@@ -226,9 +185,8 @@ function getAccessToken(callback) {
         option.value = index;
         vmSelect.add(option);
     });
-    });
     
-    // Trigger the change event to populate the Galleries, Definitions, and VMs select elements initially
+    // Trigger the change event to populate the VMs select elements initially
     subscriptionSelect.dispatchEvent(new Event('change'));
     updatestatus.textContent = 'ready';
     updatestatus.style.animation = 'none';
@@ -238,8 +196,6 @@ function getAccessToken(callback) {
   async function updateresources() {
     azresources = null;
     subscriptionSelect.innerText = null;
-    gallerySelect.innerText = null;
-    definitionSelect.innerText = null;
     vmSelect.innerText = null;
     updatestatus.textContent = 'updating';
     updatestatus.style.animation = 'blink 2s infinite';
@@ -251,8 +207,6 @@ function getAccessToken(callback) {
 
   // Get the select elements
   const subscriptionSelect = document.getElementById('Subselector');
-  const gallerySelect = document.getElementById('Galleryselector');
-  const definitionSelect = document.getElementById('Definitionselector');
   const vmSelect = document.getElementById('VMselector');
   const updatestatus = document.getElementById('updatestatus');
   var azresources = JSON.parse(sessionStorage.getItem("azresources"));
