@@ -44,7 +44,7 @@
       },
       {
         "route": "/login",
-        "rewrite": "/.auth/login/aad"
+        "rewrite": "/.auth/login/aad?post_login_redirect_uri=/vmlist/"
       },
       {
         "route": "/.auth/login/twitter",
