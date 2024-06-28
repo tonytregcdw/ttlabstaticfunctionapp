@@ -1,0 +1,275 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>AVD Gold Image Creation Tool</title>
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<body>
+  <div class="wrapper">
+    <div class="status">
+      <button onclick="updateresources()">Lookup VMs</button>
+      <p id="updatestatus"></p>
+    </div>
+    <form id="apiForm">
+      <label for="input"><h2>Select:</h2></label><br>
+      <div id="Subscriptions"><p>Subscription:</p>
+        <select id="Subselector"></select>
+      </div>
+      <div id="VMs"><p>Gold Master VM for imaging</p>
+        <select id="VMselector"></select>
+      </div>
+      <div id="Galleries"><p>Azure Compute Gallery</p>
+        <select id="Galleryselector"></select>
+      </div>
+      <div id="Definitions"><p>Image Definition:</p>
+        <select id="Definitionselector"></select>
+      </div>
+      <div class="status">
+        <div class="column1">
+          <p id="timerDisplay">Timer: 0</p>
+        </div>
+        <div class="column2">
+          <ul id="statusDisplay"></ul>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+  <script>
+    async function getUserInfo() {
+      const response = await fetch('/.auth/me');
+      const payload = await response.json();
+      const { clientPrincipal } = payload;
+      return clientPrincipal;
+    }
+
+    (async () => {
+    console.log(await getUserInfo());
+    })();
+  </script>
+
+  <script src="https://alcdn.msauth.net/browser/2.17.0/js/msal-browser.min.js"></script>
+
+  <script>
+
+
+function getAccessToken(callback) {
+    console.log('attempting to retrieve access token');
+    const config = {
+        auth: {
+            clientId: "0f790682-c2d8-46d0-a22d-e5760fc93ff3",
+            authority: "https://login.microsoftonline.com/common",
+            redirectUri: "https://avdgoldimage.az.trickyjoe.com/",
+        },
+    };
+
+    const loginRequest = {
+        scopes: ["https://management.azure.com/user_impersonation"],
+    };
+    // const msal = require('@azure/msal-browser');
+    const myMsal = new msal.PublicClientApplication(config);
+
+    myMsal.handleRedirectPromise().then(response => {
+        let accountId = "";
+        console.log('response is:', response);
+        if (response !== null) {
+            accountId = response.account.homeAccountId;
+            // Handle signed-in user content, call API, etc.
+            let accessToken = response.accessToken;
+            let useraccess = {
+                accessToken: accessToken,
+                tenantId: response.account.tenantId,
+                AccountId: response.account.username
+            };
+            console.log("calling back token:", useraccess);
+            callback(useraccess);
+        } else {
+            console.log('entering the token-only method, as response is null');
+            const currentAccounts = myMsal.getAllAccounts();
+            if (currentAccounts.length === 1) {
+                console.log('foundaccount:', currentAccounts);
+                accountId = currentAccounts[0].homeAccountId;
+                console.log('accountId for existing session',accountId);
+                const accessTokenRequest = {
+                    scopes: ["https://management.azure.com/user_impersonation"],
+                    account: currentAccounts[0],
+                };
+                myMsal.acquireTokenSilent(accessTokenRequest).then(accessTokenResponse => {
+                    console.log('tokenresponse is:', accessTokenResponse);
+                    let accessToken = accessTokenResponse.accessToken;
+                    let useraccess = {
+                        accessToken: accessToken,
+                        tenantId: accessTokenResponse.account.tenantId,
+                        AccountId: accessTokenResponse.account.username
+                    };
+                    console.log("calling back token:", useraccess);
+                    callback(useraccess);
+                }).catch(error => {
+                    console.log(error);
+                    if (error instanceof msal.InteractionRequiredAuthError) {
+                        myMsal.acquireTokenRedirect(accessTokenRequest);
+                    }
+                });
+            } else if (currentAccounts.length === 0) {
+                // No accounts signed-in, attempt to sign a user in
+                myMsal.loginRedirect(loginRequest);
+            } else {
+                console.log('Error - multiple accounts detected');
+            }
+        }
+    }).catch(error => {
+        console.log(error);
+    });
+}
+    
+</script>
+
+
+<script>
+
+  async function getJSONazresources(useraccess) {
+    console.log('POSTing:', useraccess)
+    //return fetch('/api/functiongoldvmlookup?code=-NDHm5KN9nSMCP05r_ywzQQNHPlxIDM79He5jWrdZs8uAzFu3gr3rw==')
+    return fetch('/api/functionvmlookup?code=blahblahblah', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ useraccess }),
+    })
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (data) {
+        return data;
+    })
+    .catch(function (err) {
+        console.log('error: ' + err);
+    });
+  }
+  
+  async function callerazresources(useraccess) {
+    //
+    if (azresources === null) {
+      azresources = await this.getJSONazresources(useraccess);
+      sessionStorage.setItem("azresources", JSON.stringify(azresources));
+    }
+    console.log('azresource is: '+JSON.stringify(azresources));
+
+    // Populate the select element for Subscriptions
+    azresources.Subscriptions.forEach((subscription, index) => {
+      const option = document.createElement('option');
+      option.text = subscription.SubscriptionName;
+      option.value = index;
+      subscriptionSelect.add(option);
+    });
+    
+    // Update the Galleries, Definitions, and VMs select elements when the Subscription changes
+    subscriptionSelect.addEventListener('change', () => {
+      // Clear the Galleries, Definitions, and VMs select elements
+      gallerySelect.innerText = null;
+      definitionSelect.innerText = null;
+      vmSelect.innerText = null;
+    
+      // Get the selected Subscription
+      // const selectedSubscription = azresources.Subscriptions.find(subscription => subscription.SubscriptionId === subscriptionSelect.value);
+      const selectedSubscription = azresources.Subscriptions[subscriptionSelect.value];
+    
+      // Populate the select element for Galleries
+      selectedSubscription.Galleries.forEach((gallery, index) => {
+        const option = document.createElement('option');
+        option.text = gallery.Name;
+        option.value = index;
+        gallerySelect.add(option);
+
+        // put this into a function as repeated further down...
+        // Populate the select element for Definitions
+        gallery.Definitions.forEach((definition, index) => {
+          console.log("found a def",definition)
+          console.log("index:",index)
+          console.log("value1:",definition["Name"])
+          const option = document.createElement('option');
+          option.text = definition["Name"];
+          option.value = index;
+          definitionSelect.add(option);
+        });
+    });
+    
+    // Update the Definitions select element when the Gallery changes
+    gallerySelect.addEventListener('change', () => {
+        // Clear the Definitions select element
+        definitionSelect.innerText = null;
+        // Get the selected Gallery
+        // const selectedGallery = selectedSubscription.Galleries.find(gallery => gallery.Name === gallerySelect.value);
+        const selectedGallery = selectedSubscription.Galleries[gallerySelect.value];
+        // Populate the select element for Definitions
+        selectedGallery.Definitions.forEach((definition, index) => {
+          console.log("found a def:",definition)
+          const option = document.createElement('option');
+          option.text = definition.Name;
+          option.value = index;
+          definitionSelect.add(option);
+        });
+    });
+    // Populate the select element for VMs
+    selectedSubscription.VMs.forEach((vm, index) => {
+        const option = document.createElement('option');
+        option.text = vm.Name;
+        option.value = index;
+        vmSelect.add(option);
+    });
+    });
+    
+    // Trigger the change event to populate the Galleries, Definitions, and VMs select elements initially
+    subscriptionSelect.dispatchEvent(new Event('change'));
+    updatestatus.textContent = 'ready';
+    updatestatus.style.animation = 'none';
+    updatestatus.style.opacity = '1';
+  }
+
+  async function updateresources() {
+    azresources = null;
+    subscriptionSelect.innerText = null;
+    gallerySelect.innerText = null;
+    definitionSelect.innerText = null;
+    vmSelect.innerText = null;
+    updatestatus.textContent = 'updating';
+    updatestatus.style.animation = 'blink 2s infinite';
+    getAccessToken((useraccess) => {
+      console.log("useraccess inside function whatever:", useraccess);
+      callerazresources(useraccess);
+    });
+  }
+
+  // Get the select elements
+  const subscriptionSelect = document.getElementById('Subselector');
+  const gallerySelect = document.getElementById('Galleryselector');
+  const definitionSelect = document.getElementById('Definitionselector');
+  const vmSelect = document.getElementById('VMselector');
+  const updatestatus = document.getElementById('updatestatus');
+  var azresources = JSON.parse(sessionStorage.getItem("azresources"));
+  updatestatus.textContent = 'updating';
+  updatestatus.style.animation = 'blink 2s infinite';
+  console.log('azresource is: '+JSON.stringify(azresources));
+
+  getAccessToken((useraccess) => {
+    console.log("useraccess inside function whatever:", useraccess);
+    callerazresources(useraccess);
+  });
+  
+  //goal - ensure useraccess is available at the start, for any proceeding functions.
+  //have a date check in useraccess to fetch a new one if it expires.
+
+</script>
+
+</body>
+
+</html>
