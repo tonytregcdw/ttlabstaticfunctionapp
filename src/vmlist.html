@@ -7,7 +7,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles.css">
-  <title>AVD Gold Image Creation Tool</title>
+  <title>Azure VM list</title>
 </head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -22,12 +22,11 @@
       <div id="Subscriptions"><p>Subscription:</p>
         <select id="Subselector"></select>
       </div>
-      <div id="VMs"><p>Gold Master VM for imaging</p>
+      <div id="VMs"><p>VM List</p>
         <select id="VMselector"></select>
       </div>
       <div class="status">
         <div class="column1">
-          <p id="timerDisplay">Timer: 0</p>
         </div>
         <div class="column2">
           <ul id="statusDisplay"></ul>
@@ -61,7 +60,7 @@ function getAccessToken(callback) {
         auth: {
             clientId: "0f790682-c2d8-46d0-a22d-e5760fc93ff3",
             authority: "https://login.microsoftonline.com/common",
-            redirectUri: "https://avdgoldimage.az.trickyjoe.com/",
+            redirectUri: "https://avdgoldimage.az.trickyjoe.com/vmlist.html",
         },
     };
 
