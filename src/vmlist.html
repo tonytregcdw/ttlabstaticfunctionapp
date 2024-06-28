@@ -175,18 +175,16 @@ function getAccessToken(callback) {
       // const selectedSubscription = azresources.Subscriptions.find(subscription => subscription.SubscriptionId === subscriptionSelect.value);
       const selectedSubscription = azresources.Subscriptions[subscriptionSelect.value];
     
-
+      // Populate the select element for VMs
+      selectedSubscription.VMs.forEach((vm, index) => {
+          const option = document.createElement('option');
+          option.text = vm.Name;
+          option.value = index;
+          vmSelect.add(option);
+      });
     });
     
-    // Populate the select element for VMs
-    selectedSubscription.VMs.forEach((vm, index) => {
-        const option = document.createElement('option');
-        option.text = vm.Name;
-        option.value = index;
-        vmSelect.add(option);
-    });
-    
-    // Trigger the change event to populate the VMs select elements initially
+    // Trigger the change event to populate the Galleries, Definitions, and VMs select elements initially
     subscriptionSelect.dispatchEvent(new Event('change'));
     updatestatus.textContent = 'ready';
     updatestatus.style.animation = 'none';
